@@ -89,4 +89,16 @@ class AuthService
     {
         $user->currentAccessToken()->delete();
     }
+
+    /**
+     * Delete the user account.
+     *
+     * @param User $user
+     * @return void
+     */
+    public function deleteAccount(User $user): void
+    {
+        $user->tokens()->delete();
+        $user->delete();
+    }
 }
