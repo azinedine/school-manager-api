@@ -22,6 +22,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'wilaya',
+        'municipality',
+        'institution_id',
+        'class',
+        'linked_student_id',
+        'subjects',
+        'levels',
     ];
 
     /**
@@ -44,6 +52,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'subjects' => 'array',
+            'levels' => 'array',
         ];
     }
 }
