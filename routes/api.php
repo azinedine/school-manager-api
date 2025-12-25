@@ -10,4 +10,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // V1 API Routes
+    Route::prefix('v1')->group(function () {
+        Route::apiResource('institutions', \App\Http\Controllers\Api\V1\InstitutionController::class);
+        Route::apiResource('teachers', \App\Http\Controllers\Api\V1\TeacherController::class)->only(['index', 'destroy']);
+    });
 });
