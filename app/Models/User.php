@@ -85,4 +85,9 @@ class User extends Authenticatable
     {
         return $this->role === self::ROLE_TEACHER;
     }
+
+    public function institution()
+    {
+        return $this->belongsTo(Institution::class);
+    }
 }
