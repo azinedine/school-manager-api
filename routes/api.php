@@ -15,5 +15,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('v1')->group(function () {
         Route::apiResource('institutions', \App\Http\Controllers\Api\V1\InstitutionController::class);
         Route::apiResource('teachers', \App\Http\Controllers\Api\V1\TeacherController::class)->only(['index', 'destroy']);
+        Route::apiResource('users', \App\Http\Controllers\Api\V1\UserController::class);
     });
 });
