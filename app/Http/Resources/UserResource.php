@@ -31,14 +31,8 @@ class UserResource extends JsonResource
             'levels' => $this->levels,
             'class' => $this->class,
             'linkedStudentId' => $this->linked_student_id,
-            'can' => [
-                'viewAny' => $request->user()?->can('viewAny', User::class) ?? false,
-                'create' => $request->user()?->can('create', User::class) ?? false,
-                'update' => $request->user()?->can('update', $this->resource) ?? false,
-                'delete' => $request->user()?->can('delete', $this->resource) ?? false,
-            ],
-            'created_at' => $this->created_at?->toISOString(),
-            'updated_at' => $this->updated_at?->toISOString(),
+            'created_at' => $this->created_at?->toIso8601String(),
+            'updated_at' => $this->updated_at?->toIso8601String(),
         ];
     }
 }
