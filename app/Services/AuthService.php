@@ -47,7 +47,7 @@ class AuthService
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [
-            'user' => $user,
+            'user' => new \App\Http\Resources\UserResource($user),
             'access_token' => $token,
             'token_type' => 'Bearer',
         ];
@@ -71,8 +71,9 @@ class AuthService
         $user = User::where('email', $credentials['email'])->firstOrFail();
         $token = $user->createToken('auth_token')->plainTextToken;
 
+
         return [
-            'user' => $user,
+            'user' => new \App\Http\Resources\UserResource($user),
             'access_token' => $token,
             'token_type' => 'Bearer',
         ];
