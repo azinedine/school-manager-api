@@ -56,4 +56,32 @@ class User extends Authenticatable
             'levels' => 'array',
         ];
     }
+    // Role Constants
+    const ROLE_SUPER_ADMIN = 'super_admin';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_MANAGER = 'manager';
+    const ROLE_TEACHER = 'teacher';
+    const ROLE_STUDENT = 'student';
+    const ROLE_PARENT = 'parent';
+
+    // Helper Methods
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === self::ROLE_SUPER_ADMIN;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isManager(): bool
+    {
+        return $this->role === self::ROLE_MANAGER;
+    }
+
+    public function isTeacher(): bool
+    {
+        return $this->role === self::ROLE_TEACHER;
+    }
 }
