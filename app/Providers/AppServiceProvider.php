@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Institution;
+use App\Observers\InstitutionObserver;
+use App\Repositories\Contracts\InstitutionRepositoryInterface;
+use App\Repositories\InstitutionRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +15,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Bind repository interface to implementation
+        $this->app->bind(
+            InstitutionRepositoryInterface::class,
+            InstitutionRepository::class
+        );
     }
 
     /**
@@ -19,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register model observers
+        Institution::observe(InstitutionObserver::class);
     }
 }
