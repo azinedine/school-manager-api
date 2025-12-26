@@ -18,7 +18,7 @@ class RegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'string', 'in:admin,teacher,student,parent'],
+            'role' => ['required', 'string', 'in:super_admin,admin,teacher,student,parent'],
             'wilaya' => ['nullable', 'string'],
             'municipality' => ['nullable', 'string'],
             'institution' => ['nullable', 'string'], // Receives name or ID
