@@ -3,60 +3,132 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Institution;
+use App\Http\Requests\Institution\StoreInstitutionRequest;
+use App\Http\Requests\Institution\UpdateInstitutionRequest;
 use App\Http\Resources\InstitutionResource;
+use App\Models\Institution;
+use App\Services\InstitutionService;
+use App\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class InstitutionController extends Controller
 {
+    use ApiResponse;
+
+    public function __construct(
+        private InstitutionService $institutionService
+    ) {}
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of institutions.
+     * 
+     * GET /api/v1/institutions
+     * 
+     * Query params:
+     *   - wilaya_id: Filter by wilaya
+     *   - municipality_id: Filter by municipality
+     *   - type: Filter by institution type
+     *   - search: Search by name/address
+     *   - is_active: Filter by active status
+     *   - per_page: Items per page (default: 15)
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
-        $query = Institution::query();
+        Gate::authorize('viewAny', Institution::class);
 
-        if ($request->has('wilaya')) {
-            $query->where('wilaya_code', $request->wilaya);
-        }
+        $filters = $request->only([
+            'wilaya_id',
+            'municipality_id',
+            'type',
+            'search',
+            'is_active',
+            'with_trashed',
+        ]);
 
-        if ($request->has('municipality')) {
-            $query->where('municipality_id', $request->municipality);
-        }
+        $perPage = min($request->input('per_page', 15), 100);
+        $institutions = $this->institutionService->list($filters, $perPage);
 
-        return InstitutionResource::collection($query->paginate(20));
+        return $this->successWithPagination(
+            InstitutionResource::collection($institutions)->resource,
+            'Institutions retrieved successfully'
+        );
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created institution.
+     * 
+     * POST /api/v1/institutions
      */
-    public function store(Request $request)
+    public function store(StoreInstitutionRequest $request): JsonResponse
     {
-        // Ideally use a FormRequest here, but keeping inline for brevity as per plan MVP
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'wilaya_code' => 'required|string',
-            'municipality_id' => 'required|string',
-            'type' => 'nullable|string|in:primary,middle,high,school',
-        ]);
+        $institution = $this->institutionService->create($request->validated());
 
-        $institution = Institution::create([
-            'name' => $validated['name'],
-            'wilaya_code' => $validated['wilaya_code'],
-            'municipality_id' => $validated['municipality_id'],
-            'type' => $validated['type'] ?? 'school',
-            'code' => strtoupper(substr($validated['name'], 0, 3)) . rand(1000, 9999),
-        ]);
-
-        return new InstitutionResource($institution);
+        return $this->created(
+            new InstitutionResource($institution),
+            'Institution created successfully'
+        );
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified institution.
+     * 
+     * GET /api/v1/institutions/{institution}
      */
-    public function show(string $id)
+    public function show(Institution $institution): JsonResponse
     {
-        $institution = Institution::findOrFail($id);
-        return new InstitutionResource($institution);
+        Gate::authorize('view', $institution);
+
+        $institution->load(['wilaya', 'municipality']);
+
+        return $this->success(
+            new InstitutionResource($institution),
+            'Institution retrieved successfully'
+        );
+    }
+
+    /**
+     * Update the specified institution.
+     * 
+     * PUT /api/v1/institutions/{institution}
+     */
+    public function update(UpdateInstitutionRequest $request, Institution $institution): JsonResponse
+    {
+        $institution = $this->institutionService->update($institution, $request->validated());
+
+        return $this->success(
+            new InstitutionResource($institution),
+            'Institution updated successfully'
+        );
+    }
+
+    /**
+     * Remove the specified institution (soft delete).
+     * 
+     * DELETE /api/v1/institutions/{institution}
+     */
+    public function destroy(Institution $institution): JsonResponse
+    {
+        Gate::authorize('delete', $institution);
+
+        $this->institutionService->delete($institution);
+
+        return $this->success(null, 'Institution deleted successfully');
+    }
+
+    /**
+     * Restore a soft-deleted institution.
+     * 
+     * POST /api/v1/institutions/{id}/restore
+     */
+    public function restore(int $id): JsonResponse
+    {
+        $institution = Institution::withTrashed()->findOrFail($id);
+        Gate::authorize('restore', $institution);
+
+        $this->institutionService->restore($id);
+
+        return $this->success(null, 'Institution restored successfully');
     }
 }
