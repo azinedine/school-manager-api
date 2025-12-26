@@ -30,7 +30,7 @@ class User extends Authenticatable
         'class',
         'linked_student_id',
         'subjects',
-        'subjects',
+
         'levels',
         'status',
     ];
