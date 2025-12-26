@@ -28,6 +28,7 @@ class UpdateUserRequest extends FormRequest
             'email' => ['sometimes', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users')->ignore($this->route('user'))],
             'password' => ['sometimes', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
             'role' => ['sometimes', 'string', 'in:admin,manager,teacher,student,parent'],
+            'status' => ['sometimes', 'string', 'in:active,inactive,suspended'],
             'wilaya' => ['nullable', 'string'],
             'municipality' => ['nullable', 'string'],
             'institution_id' => ['nullable', 'exists:institutions,id'],
