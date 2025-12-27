@@ -26,6 +26,13 @@ class RegisterRequest extends FormRequest
             'levels' => ['nullable', 'array'],
             'class' => ['nullable', 'string'],
             'linked_student_id' => ['nullable', 'string'],
+            // Admin fields
+            'department' => ['nullable', 'string'],
+            'position' => ['nullable', 'string'],
+            'date_of_hiring' => ['nullable', 'date'],
+            'work_phone' => ['nullable', 'string'],
+            'office_location' => ['nullable', 'string'],
+            'notes' => ['nullable', 'string'],
         ];
     }
 }
