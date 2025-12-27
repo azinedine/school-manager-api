@@ -24,12 +24,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // V1 API Routes
     Route::prefix('v1')->group(function () {
-        // Wilayas & Municipalities (read-only for location selection)
-        Route::get('wilayas', [WilayaController::class, 'index']);
-        Route::get('wilayas/{wilaya}/municipalities', [WilayaController::class, 'municipalities']);
-
-        // Institutions (full CRUD)
-        Route::apiResource('institutions', InstitutionController::class);
+        // Institutions (Write operations & Restore)
+        Route::apiResource('institutions', InstitutionController::class)->except(['index', 'show']);
+        
         Route::post('institutions/{id}/restore', [InstitutionController::class, 'restore'])
             ->name('institutions.restore');
 
@@ -38,4 +35,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('users', \App\Http\Controllers\Api\V1\UserController::class);
         Route::apiResource('roles', \App\Http\Controllers\Api\V1\RoleController::class);
     });
+});
+
+// Public V1 API Routes
+Route::prefix('v1')->group(function () {
+    // Location Data
+    Route::get('wilayas', [WilayaController::class, 'index']);
+    Route::get('wilayas/{wilaya}/municipalities', [WilayaController::class, 'municipalities']);
+    
+    // Institutions Read (for selection in registration)
+    Route::get('institutions', [InstitutionController::class, 'index']);
+    Route::get('institutions/{institution}', [InstitutionController::class, 'show']);
 });
