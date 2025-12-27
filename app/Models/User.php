@@ -38,6 +38,19 @@ class User extends Authenticatable
         'work_phone',
         'office_location',
         'notes',
+        
+        // Extended Profile
+        'name_ar',
+        'gender',
+        'date_of_birth',
+        'address',
+        'phone',
+        
+        // Teacher Specific
+        'teacher_id',
+        'years_of_experience',
+        'employment_status',
+        'weekly_teaching_load',
 
         'status',
     ];
