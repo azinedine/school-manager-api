@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Institution\StoreInstitutionRequest;
 use App\Http\Requests\Institution\UpdateInstitutionRequest;
+use App\Http\Requests\Institution\GetInstitutionsRequest;
 use App\Http\Resources\InstitutionResource;
 use App\Models\Institution;
 use App\Services\InstitutionService;
@@ -34,7 +35,7 @@ class InstitutionController extends Controller
      *   - is_active: Filter by active status
      *   - per_page: Items per page (default: 15)
      */
-    public function index(Request $request): JsonResponse
+    public function index(GetInstitutionsRequest $request): JsonResponse
     {
         // Gate::authorize('viewAny', Institution::class); // Permissions handled by route/public access
 
