@@ -46,4 +46,6 @@ Route::prefix('v1')->group(function () {
     // Institutions Read (for selection in registration)
     Route::get('institutions', [InstitutionController::class, 'index']);
     Route::get('institutions/{institution}', [InstitutionController::class, 'show']);
+    // Dedicated route for filtering by location
+    Route::get('wilayas/{wilaya}/municipalities/{municipality}/institutions', [InstitutionController::class, 'getByLocation']);
 });
