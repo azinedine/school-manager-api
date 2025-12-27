@@ -54,7 +54,7 @@ class AuthService
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [
-            'user' => new \App\Http\Resources\UserResource($user),
+            'user' => new \App\Http\Resources\UserResource($user->load('institution')),
             'access_token' => $token,
             'token_type' => 'Bearer',
         ];
@@ -80,7 +80,7 @@ class AuthService
 
 
         return [
-            'user' => new \App\Http\Resources\UserResource($user),
+            'user' => new \App\Http\Resources\UserResource($user->load('institution')),
             'access_token' => $token,
             'token_type' => 'Bearer',
         ];
