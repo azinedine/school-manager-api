@@ -30,8 +30,15 @@ class User extends Authenticatable
         'class',
         'linked_student_id',
         'subjects',
-
         'levels',
+        // Admin Profile
+        'department',
+        'position',
+        'date_of_hiring',
+        'work_phone',
+        'office_location',
+        'notes',
+
         'status',
     ];
 
