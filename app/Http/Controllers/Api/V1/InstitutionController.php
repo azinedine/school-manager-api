@@ -36,7 +36,7 @@ class InstitutionController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        Gate::authorize('viewAny', Institution::class);
+        // Gate::authorize('viewAny', Institution::class); // Permissions handled by route/public access
 
         $filters = $request->only([
             'wilaya_id',
@@ -78,7 +78,7 @@ class InstitutionController extends Controller
      */
     public function show(Institution $institution): JsonResponse
     {
-        Gate::authorize('view', $institution);
+        // Gate::authorize('view', $institution); // Permissions handled by route/public access
 
         $institution->load(['wilaya', 'municipality']);
 
@@ -130,5 +130,30 @@ class InstitutionController extends Controller
         $this->institutionService->restore($id);
 
         return $this->success(null, 'Institution restored successfully');
+    }
+
+    /**
+     * Get institutions by Wilaya and Municipality.
+     * 
+     * GET /api/v1/wilayas/{wilaya}/municipalities/{municipality}/institutions
+     */
+    public function getByLocation($wilayaId, $municipalityId): JsonResponse
+    {
+        // No Auth check needed as this is for public registration
+        
+        // We can use the service list method with strict filters
+        $filters = [
+            'wilaya_id' => $wilayaId,
+            'municipality_id' => $municipalityId,
+            'is_active' => true // Only active institutions for registration
+        ];
+
+        // Retrieve all matching institutions (not paginated, for dropdown)
+        $institutions = $this->institutionService->all($filters);
+
+        return $this->success(
+            InstitutionResource::collection($institutions),
+            'Institutions retrieved successfully'
+        );
     }
 }
