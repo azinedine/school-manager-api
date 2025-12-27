@@ -42,6 +42,13 @@ class AuthService
             'linked_student_id' => $data['linked_student_id'] ?? null,
             'subjects' => $data['subjects'] ?? null,
             'levels' => $data['levels'] ?? null,
+            // Admin fields
+            'department' => $data['department'] ?? null,
+            'position' => $data['position'] ?? null,
+            'date_of_hiring' => $data['date_of_hiring'] ?? null,
+            'work_phone' => $data['work_phone'] ?? null,
+            'office_location' => $data['office_location'] ?? null,
+            'notes' => $data['notes'] ?? null,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
