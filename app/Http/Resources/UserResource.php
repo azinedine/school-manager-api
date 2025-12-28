@@ -27,6 +27,11 @@ class UserResource extends JsonResource
             'institution' => $this->when($this->relationLoaded('institution') && $this->institution, [
                 'id' => $this->institution?->id,
                 'name' => $this->institution?->name,
+                'name_ar' => $this->institution?->name_ar,
+                'type' => $this->institution?->type,
+                // Include location info if needed, or rely on user's own location fields
+                // 'wilaya' => $this->institution?->wilaya, 
+                // 'municipality' => $this->institution?->municipality,
             ]),
             'user_institution_id' => $this->user_institution_id,
             'subjects' => $this->subjects,
