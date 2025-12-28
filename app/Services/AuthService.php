@@ -17,18 +17,8 @@ class AuthService
      */
     public function register(array $data): array
     {
-        $institutionId = null;
-        if (!empty($data['institution'])) {
-            $institution = Institution::firstOrCreate(
-                ['name' => $data['institution']],
-                [
-                    'wilaya_code' => $data['wilaya'] ?? 'UNKNOWN',
-                    'municipality_id' => $data['municipality'] ?? 'UNKNOWN',
-                    'code' => strtoupper(substr($data['institution'], 0, 3)) . rand(1000, 9999),
-                ]
-            );
-            $institutionId = $institution->id;
-        }
+        // Accept institution_id directly from frontend
+        $institutionId = $data['institution_id'] ?? null;
 
         $user = User::create([
             'name' => $data['name'],
