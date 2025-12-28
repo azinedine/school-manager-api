@@ -38,6 +38,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('users', [\App\Http\Controllers\Api\V1\AdminUserController::class, 'index'])->name('users.index');
         });
+        
+        // Super Admin Scope Routes
+        Route::prefix('super-admin')->name('super-admin.')->group(function () {
+             Route::get('users', [\App\Http\Controllers\Api\V1\SuperAdminUserController::class, 'index'])->name('users.index');
+        });
     });
 });
 
