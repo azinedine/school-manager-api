@@ -19,19 +19,31 @@ class RegisterRequest extends FormRequest
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'string', 'in:super_admin,admin,teacher,student,parent'],
-            'wilaya' => ['nullable', 'string'],
-            'municipality' => ['nullable', 'string'],
-            'institution_id' => ['nullable', 'integer', 'exists:institutions,id'],
-            'subjects' => ['nullable', 'array'],
-            'levels' => ['nullable', 'array'],
-            'class' => ['nullable', 'string'],
-            'linked_student_id' => ['nullable', 'string'],
+            'wilaya' => ['required', 'string'],
+            'municipality' => ['required', 'string'],
+            'institution_id' => ['required', 'integer', 'exists:institutions,id'],
+            
+            // Teacher fields (required when role=teacher)
+            'name_ar' => ['required_if:role,teacher', 'nullable', 'string'],
+            'gender' => ['required_if:role,teacher', 'nullable', 'in:male,female'],
+            'date_of_birth' => ['required_if:role,teacher', 'nullable', 'date'],
+            'phone' => ['required_if:role,teacher', 'nullable', 'string'],
+            'years_of_experience' => ['required_if:role,teacher', 'nullable', 'integer', 'min:0'],
+            'subjects' => ['required_if:role,teacher', 'nullable', 'array', 'min:1'],
+            'levels' => ['required_if:role,teacher', 'nullable', 'array', 'min:1'],
+            
+            // Student fields
+            'class' => ['required_if:role,student', 'nullable', 'string'],
+            
+            // Parent fields
+            'linked_student_id' => ['required_if:role,parent', 'nullable', 'string'],
+            
             // Admin fields
-            'department' => ['nullable', 'string'],
-            'position' => ['nullable', 'string'],
-            'date_of_hiring' => ['nullable', 'date'],
-            'work_phone' => ['nullable', 'string'],
-            'office_location' => ['nullable', 'string'],
+            'department' => ['required_if:role,admin', 'nullable', 'string'],
+            'position' => ['required_if:role,admin', 'nullable', 'string'],
+            'date_of_hiring' => ['required_if:role,admin', 'nullable', 'date'],
+            'work_phone' => ['required_if:role,admin', 'nullable', 'string'],
+            'office_location' => ['required_if:role,admin', 'nullable', 'string'],
             'notes' => ['nullable', 'string'],
         ];
     }
