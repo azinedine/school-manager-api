@@ -68,11 +68,15 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
-    {
-        // policy check is inside Request::authorize
+    public function update(
+        \App\Http\Requests\User\UpdateUserProfileRequest $request, 
+        User $user,
+        \App\UseCases\User\UpdateUserProfileUseCase $updateUserProfileUseCase
+    ) {
+        // Policy check is handled in Request::authorize()
+        // Validation is handled in Request::rules() (Strict Whitelist)
 
-        $user = $this->userService->update($user, $request->validated());
+        $user = $updateUserProfileUseCase->execute($user, $request->validated());
 
         return new UserResource($user);
     }
