@@ -22,8 +22,16 @@ class UserResource extends JsonResource
             'role' => $this->role,
             'status' => $this->status,
             'avatar' => $this->avatar,
-            'wilaya' => $this->wilaya,
-            'municipality' => $this->municipality,
+            'wilaya' => $this->wilaya() ? [
+                'id' => $this->wilaya()->first()?->id,
+                'name' => $this->wilaya()->first()?->name,
+                'name_ar' => $this->wilaya()->first()?->name_ar,
+            ] : null,
+            'municipality' => $this->municipality() ? [
+                'id' => $this->municipality()->first()?->id,
+                'name' => $this->municipality()->first()?->name,
+                'name_ar' => $this->municipality()->first()?->name_ar,
+            ] : null,
             'institution_id' => $this->institution_id,
             'institution' => $this->institution ? [
                 'id' => $this->institution->id,
