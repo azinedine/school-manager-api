@@ -27,6 +27,7 @@ class User extends Authenticatable
         'wilaya',
         'municipality',
         'institution_id',
+        'user_institution_id',
         'class',
         'linked_student_id',
         'subjects',
