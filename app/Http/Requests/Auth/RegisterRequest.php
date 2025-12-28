@@ -21,7 +21,7 @@ class RegisterRequest extends FormRequest
             'role' => ['required', 'string', 'in:super_admin,admin,teacher,student,parent'],
             'wilaya' => ['nullable', 'string'],
             'municipality' => ['nullable', 'string'],
-            'institution' => ['nullable', 'string'], // Receives name or ID
+            'institution_id' => ['nullable', 'integer', 'exists:institutions,id'],
             'subjects' => ['nullable', 'array'],
             'levels' => ['nullable', 'array'],
             'class' => ['nullable', 'string'],
