@@ -116,6 +116,16 @@ class User extends Authenticatable
         return $this->belongsTo(Institution::class);
     }
 
+    public function wilaya()
+    {
+        return $this->belongsTo(Wilaya::class, 'wilaya', 'id');
+    }
+
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class, 'municipality', 'id');
+    }
+
     /**
      * Scope a query to only include users belonging to a specific institution.
      */
