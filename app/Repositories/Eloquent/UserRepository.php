@@ -19,7 +19,7 @@ class UserRepository implements UserRepositoryInterface
                 $user->save();
             }
             
-            return $user->refresh();
+            return $user->refresh()->load('institution');
         });
     }
 }
