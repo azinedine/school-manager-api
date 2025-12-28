@@ -45,6 +45,14 @@ class UpdateUserProfileRequest extends FormRequest
                 'max:255', 
                 Rule::unique('users')->ignore($this->route('user'))
             ],
+
+            // Extended Profile Fields
+            'name_ar' => ['nullable', 'string', 'max:255'],
+            'gender' => ['nullable', 'string', 'in:male,female'],
+            'date_of_birth' => ['nullable', 'date'],
+            'address' => ['nullable', 'string', 'max:500'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'years_of_experience' => ['nullable', 'integer'],
             
             // Location
             'wilaya' => ['nullable', 'string', 'max:255'],
