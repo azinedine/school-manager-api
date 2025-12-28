@@ -21,6 +21,11 @@ return Application::configure(basePath: dirname(__DIR__))
         
         // Override for API to avoid redirecting
         $middleware->redirectGuestsTo(fn (Request $request) => $request->is('api/*') ? null : route('login'));
+        
+        // Register custom middleware aliases
+        $middleware->alias([
+            'check.suspended' => \App\Http\Middleware\CheckSuspendedUser::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(function (Request $request, \Throwable $e) {
