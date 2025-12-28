@@ -3,19 +3,29 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TeacherResource;
+use App\Repositories\Contracts\TeacherRepositoryInterface;
 use App\Models\User;
-use App\Http\Resources\UserResource;
-use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
+    protected $teacherRepository;
+
+    /**
+     * Constructor injection.
+     */
+    public function __construct(TeacherRepositoryInterface $teacherRepository)
+    {
+        $this->teacherRepository = $teacherRepository;
+    }
+
     /**
      * Display a listing of teachers.
      */
     public function index()
     {
-        $teachers = User::where('role', 'teacher')->paginate(20);
-        return UserResource::collection($teachers);
+        $teachers = $this->teacherRepository->getAllTeachers();
+        return TeacherResource::collection($teachers);
     }
 
     /**
