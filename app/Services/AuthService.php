@@ -76,6 +76,10 @@ class AuthService
         }
 
         $user = User::where('email', $credentials['email'])->firstOrFail();
+        
+        // Update last login timestamp
+        $user->update(['last_login_at' => now()]);
+        
         $token = $user->createToken('auth_token')->plainTextToken;
 
 
