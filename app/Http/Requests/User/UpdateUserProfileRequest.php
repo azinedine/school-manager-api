@@ -60,7 +60,7 @@ class UpdateUserProfileRequest extends FormRequest
             
             // Relationships
             'institution_id' => ['nullable', 'exists:institutions,id'],
-            'user_institution_id' => ['nullable', 'string'], // Added in 2025_12_28_091247
+            'user_institution_id' => ['nullable', 'string'], // Matricule/ID at institution
             
             // Student specific (from add_profile_fields)
             'class' => ['nullable', 'string', 'max:255'],
