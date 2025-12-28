@@ -34,7 +34,7 @@ class UpdateUserProfileRequest extends FormRequest
         // STRICT WHITELIST: Only columns that definitely exist in DB migrations
         // Missing (Phantoms): name_ar, gender, date_of_birth, address, phone, years_of_experience
         
-        return [
+        $rules = [
             // Core
             'name' => ['sometimes', 'string', 'max:255'],
             'email' => [
@@ -73,6 +73,18 @@ class UpdateUserProfileRequest extends FormRequest
             'office_location' => ['nullable', 'string', 'max:255'],
             'notes' => ['nullable', 'string'],
         ];
+
+        // Status and role changes only allowed when admin/manager is updating OTHER users
+        $targetUser = $this->route('user');
+        $currentUser = $this->user();
+        $isUpdatingSelf = $currentUser && $targetUser && $currentUser->id === $targetUser->id;
+        
+        if (!$isUpdatingSelf && ($currentUser?->isAdmin() || $currentUser?->isManager() || $currentUser?->isSuperAdmin())) {
+            $rules['status'] = ['sometimes', 'string', 'in:active,inactive,suspended'];
+            $rules['role'] = ['sometimes', 'string', 'in:admin,manager,teacher,student,parent'];
+        }
+
+        return $rules;
     }
 
     /**
