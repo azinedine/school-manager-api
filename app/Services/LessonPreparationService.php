@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\LessonPreparation;
+use App\Models\User;
 use App\Repositories\Contracts\LessonPreparationRepositoryInterface;
 use Illuminate\Pagination\Paginator;
 
@@ -40,12 +41,40 @@ class LessonPreparationService
     }
 
     /**
+     * Resolve subject name from teacher profile
+     * 
+     * Subject is identity-bound to the teacher, not lesson-bound.
+     * Takes the first subject from the teacher's subjects array.
+     */
+    protected function resolveSubjectFromTeacher(int $teacherId): string
+    {
+        $teacher = User::find($teacherId);
+        
+        if (!$teacher) {
+            return 'Unknown';
+        }
+
+        $subjects = $teacher->subjects;
+        
+        // If subjects is an array and has values, use the first one
+        if (is_array($subjects) && count($subjects) > 0) {
+            return $subjects[0];
+        }
+
+        // Fallback to empty or default
+        return 'General';
+    }
+
+    /**
      * Create a new lesson preparation
      */
     public function createPreparation(int $teacherId, array $data): LessonPreparation
     {
         // Ensure the teacher_id is set
         $data['teacher_id'] = $teacherId;
+
+        // Resolve subject from teacher profile (identity-bound)
+        $data['subject'] = $this->resolveSubjectFromTeacher($teacherId);
 
         // Validate that arrays are properly formatted
         $data = $this->formatArrayFields($data);
@@ -58,8 +87,8 @@ class LessonPreparationService
      */
     public function updatePreparation(int $id, array $data): LessonPreparation
     {
-        // Don't allow changing the teacher
-        unset($data['teacher_id']);
+        // Don't allow changing teacher or subject
+        unset($data['teacher_id'], $data['subject']);
 
         // Validate that arrays are properly formatted
         $data = $this->formatArrayFields($data);
