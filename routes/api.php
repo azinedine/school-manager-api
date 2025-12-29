@@ -40,6 +40,10 @@ Route::middleware(['auth:sanctum', 'check.suspended'])->group(function () {
         Route::get('lessons/statistics/summary', [\App\Http\Controllers\Api\V1\LessonController::class, 'statistics'])
             ->name('lessons.statistics');
 
+        // Timetable Routes
+        Route::get('timetable', [\App\Http\Controllers\Api\V1\TimetableEntryController::class, 'index']);
+        Route::post('timetable', [\App\Http\Controllers\Api\V1\TimetableEntryController::class, 'store']);
+
         // Legacy routes for backward compatibility
         Route::apiResource('teachers', \App\Http\Controllers\Api\V1\TeacherController::class)->only(['index', 'destroy']);
         Route::apiResource('users', \App\Http\Controllers\Api\V1\UserController::class);
