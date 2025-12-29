@@ -129,6 +129,14 @@ class User extends Authenticatable
     /**
      * Scope a query to only include users belonging to a specific institution.
      */
+    /**
+     * Get the user's timetable entries
+     */
+    public function timetableEntries()
+    {
+        return $this->hasMany(TimetableEntry::class);
+    }
+
     public function scopeForInstitution($query, string|int $institutionId)
     {
         return $query->where('institution_id', $institutionId);
