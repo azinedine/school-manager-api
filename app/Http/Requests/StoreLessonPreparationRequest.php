@@ -16,6 +16,9 @@ class StoreLessonPreparationRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
+     * 
+     * NOTE: subject is removed from validation.
+     * Subject is identity-bound to the teacher and resolved from auth user.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
@@ -23,7 +26,7 @@ class StoreLessonPreparationRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'min:3', 'max:255'],
-            'subject' => ['required', 'string', 'min:1', 'max:100'],
+            // NOTE: subject removed - resolved from authenticated teacher
             'class' => ['required', 'string', 'min:1', 'max:50'],
             'date' => ['required', 'date', 'date_format:Y-m-d'],
             'duration_minutes' => ['required', 'integer', 'min:15', 'max:480'],
@@ -54,7 +57,6 @@ class StoreLessonPreparationRequest extends FormRequest
         return [
             'title.required' => 'The lesson title is required.',
             'title.min' => 'The lesson title must be at least 3 characters.',
-            'subject.required' => 'Please select a subject.',
             'class.required' => 'Please select a class.',
             'date.required' => 'Please select a date.',
             'date.date_format' => 'The date format must be YYYY-MM-DD.',
