@@ -11,7 +11,7 @@ class StoreLessonPreparationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->hasRole('teacher');
+        return auth()->check() && auth()->user()->isTeacher();
     }
 
     /**
