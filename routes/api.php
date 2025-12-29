@@ -35,6 +35,11 @@ Route::middleware(['auth:sanctum', 'check.suspended'])->group(function () {
         Route::get('lesson-preparations/statistics/summary', [\App\Http\Controllers\Api\V1\LessonPreparationController::class, 'statistics'])
             ->name('lesson-preparations.statistics');
 
+        // Lessons CRUD Routes (Teacher only)
+        Route::apiResource('lessons', \App\Http\Controllers\Api\V1\LessonController::class);
+        Route::get('lessons/statistics/summary', [\App\Http\Controllers\Api\V1\LessonController::class, 'statistics'])
+            ->name('lessons.statistics');
+
         // Legacy routes for backward compatibility
         Route::apiResource('teachers', \App\Http\Controllers\Api\V1\TeacherController::class)->only(['index', 'destroy']);
         Route::apiResource('users', \App\Http\Controllers\Api\V1\UserController::class);
