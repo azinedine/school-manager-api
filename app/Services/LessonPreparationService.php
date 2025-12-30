@@ -68,13 +68,19 @@ class LessonPreparationService
     /**
      * Create a new lesson preparation
      */
+    /**
+     * Create a new lesson preparation
+     */
     public function createPreparation(int $teacherId, array $data): LessonPreparation
     {
         // Ensure the teacher_id is set
         $data['teacher_id'] = $teacherId;
 
-        // Resolve subject from teacher profile (identity-bound)
-        $data['subject'] = $this->resolveSubjectFromTeacher($teacherId);
+        // Subject is now passed in $data and validated by the Request
+        // but if missing (fallback), try to resolve it
+        if (!isset($data['subject']) || empty($data['subject'])) {
+            $data['subject'] = $this->resolveSubjectFromTeacher($teacherId);
+        }
 
         // Validate that arrays are properly formatted
         $data = $this->formatArrayFields($data);
@@ -87,8 +93,10 @@ class LessonPreparationService
      */
     public function updatePreparation(int $id, array $data): LessonPreparation
     {
-        // Don't allow changing teacher or subject
-        unset($data['teacher_id'], $data['subject']);
+        // Don't allow changing teacher
+        unset($data['teacher_id']);
+        
+        // Subject CAN be updated now if the teacher wants to correct it
 
         // Validate that arrays are properly formatted
         $data = $this->formatArrayFields($data);
