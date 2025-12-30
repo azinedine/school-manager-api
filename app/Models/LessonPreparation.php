@@ -14,9 +14,9 @@ class LessonPreparation extends Model
 
     protected $fillable = [
         'teacher_id',
-        'title',
+        'lesson_number',
         'subject',
-        'class',
+        'level',
         'date',
         'duration_minutes',
         'learning_objectives',
@@ -66,11 +66,11 @@ class LessonPreparation extends Model
     }
 
     /**
-     * Scope to filter by class
+     * Scope to filter by level
      */
-    public function scopeByClass($query, string $class)
+    public function scopeByLevel($query, string $level)
     {
-        return $query->where('class', $class);
+        return $query->where('level', $level);
     }
 
     /**
