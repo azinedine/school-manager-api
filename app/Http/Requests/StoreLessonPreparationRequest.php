@@ -58,6 +58,19 @@ class StoreLessonPreparationRequest extends FormRequest
             'assessment_criteria' => ['nullable', 'string', 'max:1000'],
             'notes' => ['nullable', 'string', 'max:2000'],
             'status' => ['required', 'in:draft,ready,delivered'],
+            
+            // Pedagogical Fields
+            'domain' => ['required', 'string', 'min:3', 'max:255'],
+            'learning_unit' => ['required', 'string', 'min:3', 'max:255'],
+            'knowledge_resource' => ['required', 'string', 'min:3', 'max:255'],
+            
+            // Lesson Elements (Dynamic Array of Objects)
+            'lesson_elements' => ['required', 'array', 'min:1'],
+            'lesson_elements.*.content' => ['required', 'string', 'min:1'],
+            
+            // Evaluation (Discriminator)
+            'evaluation_type' => ['required', 'in:assessment,homework'],
+            'evaluation_content' => ['required', 'string', 'min:3'],
         ];
     }
 
