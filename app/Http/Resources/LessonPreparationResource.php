@@ -20,9 +20,9 @@ class LessonPreparationResource extends JsonResource
         return [
             'id' => $get('id'),
             'teacher_id' => $get('teacher_id'),
-            'title' => $get('title'),
+            'lesson_number' => $get('lesson_number'),
             'subject' => $get('subject'),
-            'class' => $get('class'),
+            'level' => $get('level'),
             'date' => $this->resource instanceof \App\Models\LessonPreparation ? $this->date->toDateString() : $get('date'),
             'duration_minutes' => $get('duration_minutes'),
             'learning_objectives' => $get('learning_objectives', []),
