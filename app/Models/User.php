@@ -137,6 +137,16 @@ class User extends Authenticatable
         return $this->hasMany(TimetableEntry::class);
     }
 
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class, 'teacher_id');
+    }
+
+    public function lessonPreparations()
+    {
+        return $this->hasMany(LessonPreparation::class, 'teacher_id');
+    }
+
     public function scopeForInstitution($query, string|int $institutionId)
     {
         return $query->where('institution_id', $institutionId);
