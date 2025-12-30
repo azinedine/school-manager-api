@@ -25,7 +25,7 @@ class StoreLessonPreparationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'min:3', 'max:255'],
+            'lesson_number' => ['required', 'integer', 'min:1'],
             'subject' => [
                 'required',
                 'string',
@@ -41,7 +41,7 @@ class StoreLessonPreparationRequest extends FormRequest
                     }
                 },
             ],
-            'class' => ['required', 'string', 'min:1', 'max:50'],
+            'level' => ['required', 'string', 'min:1', 'max:50'],
             'date' => ['required', 'date', 'date_format:Y-m-d'],
             'duration_minutes' => ['required', 'integer', 'min:15', 'max:480'],
             'learning_objectives' => ['required', 'array', 'min:1'],
@@ -82,9 +82,9 @@ class StoreLessonPreparationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => 'The lesson title is required.',
-            'title.min' => 'The lesson title must be at least 3 characters.',
-            'class.required' => 'Please select a class.',
+            'lesson_number.required' => 'The lesson number is required.',
+            'lesson_number.min' => 'The lesson number must be at least 1 character.',
+            'level.required' => 'Please select a level.',
             'date.required' => 'Please select a date.',
             'date.date_format' => 'The date format must be YYYY-MM-DD.',
             'duration_minutes.required' => 'Please enter the lesson duration.',
