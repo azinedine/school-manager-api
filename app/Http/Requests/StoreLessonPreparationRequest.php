@@ -26,7 +26,21 @@ class StoreLessonPreparationRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'min:3', 'max:255'],
-            // NOTE: subject removed - resolved from authenticated teacher
+            'subject' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    $teacherSubjects = auth()->user()->subjects ?? [];
+                    // Ensure subjects is an array
+                    if (!is_array($teacherSubjects)) {
+                        $teacherSubjects = [];
+                    }
+                    
+                    if (!in_array($value, $teacherSubjects)) {
+                        $fail("The selected subject is not in your assigned subjects list.");
+                    }
+                },
+            ],
             'class' => ['required', 'string', 'min:1', 'max:50'],
             'date' => ['required', 'date', 'date_format:Y-m-d'],
             'duration_minutes' => ['required', 'integer', 'min:15', 'max:480'],
