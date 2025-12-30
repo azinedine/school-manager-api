@@ -28,6 +28,13 @@ class LessonPreparation extends Model
         'assessment_criteria',
         'notes',
         'status',
+        // Pedagogical Fields
+        'domain',
+        'learning_unit',
+        'knowledge_resource',
+        'lesson_elements',
+        'evaluation_type',
+        'evaluation_content',
     ];
 
     protected $casts = [
@@ -37,6 +44,7 @@ class LessonPreparation extends Model
         'teaching_methods' => 'array',
         'resources_needed' => 'array',
         'assessment_methods' => 'array',
+        'lesson_elements' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
