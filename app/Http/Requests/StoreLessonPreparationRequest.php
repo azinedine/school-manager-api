@@ -42,11 +42,11 @@ class StoreLessonPreparationRequest extends FormRequest
                 },
             ],
             'level' => ['required', 'string', 'min:1', 'max:50'],
-            'date' => ['required', 'date', 'date_format:Y-m-d'],
+            'date' => ['required', 'date'],
             'duration_minutes' => ['required', 'integer', 'min:15', 'max:480'],
             'learning_objectives' => ['required', 'array', 'min:1'],
             'learning_objectives.*' => ['string', 'min:1', 'max:500'],
-            'description' => ['nullable', 'string', 'max:2000'],
+            // Description removed
             'key_topics' => ['required', 'array', 'min:1'],
             'key_topics.*' => ['string', 'min:1', 'max:500'],
             'teaching_methods' => ['required', 'array', 'min:1'],
@@ -55,7 +55,7 @@ class StoreLessonPreparationRequest extends FormRequest
             'resources_needed.*' => ['string', 'min:1', 'max:500'],
             'assessment_methods' => ['nullable', 'array'],
             'assessment_methods.*' => ['string', 'min:1', 'max:100'],
-            'assessment_criteria' => ['nullable', 'string', 'max:1000'],
+            // Assessment criteria removed
             'notes' => ['nullable', 'string', 'max:2000'],
             'status' => ['required', 'in:draft,ready,delivered'],
             
@@ -86,7 +86,6 @@ class StoreLessonPreparationRequest extends FormRequest
             'lesson_number.min' => 'The lesson number must be at least 1 character.',
             'level.required' => 'Please select a level.',
             'date.required' => 'Please select a date.',
-            'date.date_format' => 'The date format must be YYYY-MM-DD.',
             'duration_minutes.required' => 'Please enter the lesson duration.',
             'duration_minutes.min' => 'Duration must be at least 15 minutes.',
             'learning_objectives.required' => 'Add at least one learning objective.',
