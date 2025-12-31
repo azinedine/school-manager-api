@@ -158,7 +158,6 @@ class LessonPreparationService
     {
         $arrayFields = [
             'learning_objectives',
-            'key_topics',
             'teaching_methods',
             'resources_needed',
             'assessment_methods',
