@@ -72,6 +72,12 @@ class UpdateUserProfileRequest extends FormRequest
             'work_phone' => ['nullable', 'string', 'max:20'],
             'office_location' => ['nullable', 'string', 'max:255'],
             'notes' => ['nullable', 'string'],
+            
+            // Teacher specific
+            'subjects' => ['nullable', 'array'],
+            'subjects.*' => ['string', 'max:255'],
+            'levels' => ['nullable', 'array'],
+            'levels.*' => ['string', 'max:255'],
         ];
 
         // Status and role changes only allowed when admin/manager is updating OTHER users
