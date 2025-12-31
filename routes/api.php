@@ -66,6 +66,10 @@ Route::prefix('v1')->group(function () {
     Route::get('wilayas', [WilayaController::class, 'index']);
     Route::get('wilayas/{wilaya}/municipalities', [WilayaController::class, 'municipalities']);
 
+    // Core Data
+    Route::get('subjects', [\App\Http\Controllers\Api\V1\SubjectController::class, 'index']);
+    Route::get('levels', [\App\Http\Controllers\Api\V1\LevelController::class, 'index']);
+
     // Institutions Read (for selection in registration)
     Route::get('institutions', [InstitutionController::class, 'index']);
     Route::get('institutions/{institution}', [InstitutionController::class, 'show']);
