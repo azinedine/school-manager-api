@@ -35,6 +35,12 @@ class LessonPreparation extends Model
         'lesson_elements',
         'evaluation_type',
         'evaluation_content',
+        // Pedagogical V2 Fields
+        'targeted_knowledge',
+        'used_materials',
+        'references',
+        'phases',
+        'activities',
     ];
 
     protected $casts = [
@@ -45,6 +51,14 @@ class LessonPreparation extends Model
         'resources_needed' => 'array',
         'assessment_methods' => 'array',
         'lesson_elements' => 'array',
+        
+        // New Fields Casts
+        'targeted_knowledge' => 'array',
+        'used_materials' => 'array',
+        'references' => 'array',
+        'phases' => 'array',
+        'activities' => 'array',
+        
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
