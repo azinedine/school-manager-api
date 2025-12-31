@@ -21,7 +21,6 @@ class LessonPreparation extends Model
         'duration_minutes',
         'learning_objectives',
         'description',
-        'key_topics',
         'teaching_methods',
         'resources_needed',
         'assessment_methods',
@@ -46,7 +45,6 @@ class LessonPreparation extends Model
     protected $casts = [
         'date' => 'date',
         'learning_objectives' => 'array',
-        'key_topics' => 'array',
         'teaching_methods' => 'array',
         'resources_needed' => 'array',
         'assessment_methods' => 'array',
