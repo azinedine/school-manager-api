@@ -24,7 +24,7 @@ class StoreLessonPreparationRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'lesson_number' => ['required', 'integer', 'min:1'],
             'subject' => [
                 'required',
@@ -72,6 +72,19 @@ class StoreLessonPreparationRequest extends FormRequest
             'evaluation_type' => ['required', 'in:assessment,homework'],
             'evaluation_content' => ['required', 'string', 'min:3'],
         ];
+
+        if ($this->isMethod('patch')) {
+            return array_map(function ($rule) {
+                // Prepend 'sometimes' to the rule array or string
+                if (is_array($rule)) {
+                    array_unshift($rule, 'sometimes');
+                    return $rule;
+                }
+                return 'sometimes|' . $rule;
+            }, $rules);
+        }
+
+        return $rules;
     }
 
     /**
