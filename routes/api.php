@@ -70,6 +70,7 @@ Route::prefix('v1')->group(function () {
     Route::get('subjects', [\App\Http\Controllers\Api\V1\SubjectController::class, 'index']);
     Route::get('levels', [\App\Http\Controllers\Api\V1\LevelController::class, 'index']);
     Route::get('materials', [\App\Http\Controllers\Api\V1\MaterialController::class, 'index']);
+    Route::get('references', [\App\Http\Controllers\Api\V1\ReferenceController::class, 'index']);
 
     // Institutions Read (for selection in registration)
     Route::get('institutions', [InstitutionController::class, 'index']);
