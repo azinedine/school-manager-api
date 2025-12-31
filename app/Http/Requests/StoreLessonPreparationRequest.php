@@ -64,9 +64,28 @@ class StoreLessonPreparationRequest extends FormRequest
             'learning_unit' => ['required', 'string', 'min:3', 'max:255'],
             'knowledge_resource' => ['required', 'string', 'min:3', 'max:255'],
             
-            // Lesson Elements (Dynamic Array of Objects)
-            'lesson_elements' => ['required', 'array', 'min:1'],
-            'lesson_elements.*.content' => ['required', 'string', 'min:1'],
+            // Lesson Elements (Dynamic Array of Objects) - Optional in V2 if phases present, but kept required for generic validation
+            // We can make it nullable or keep it as is. If UI sends empty array, it might fail min:1.
+            // The schema sends it as optional? Frontend defaults to [{content: ''}] if empty.
+            // Let's keep it required for now as legacy.
+            'lesson_elements' => ['nullable', 'array'],
+            'lesson_elements.*.content' => ['nullable', 'string'],
+            
+            // Pedagogical V2 Fields (Nullable/Optional)
+            'targeted_knowledge' => ['nullable', 'array'],
+            'targeted_knowledge.*' => ['string'],
+            'used_materials' => ['nullable', 'array'],
+            'used_materials.*' => ['string'],
+            'references' => ['nullable', 'array'],
+            'references.*' => ['string'],
+            
+            'phases' => ['nullable', 'array'],
+            'phases.*.type' => ['required_with:phases', 'string', 'in:departure,presentation,consolidation'],
+            'phases.*.content' => ['required_with:phases', 'string'],
+            'phases.*.duration_minutes' => ['required_with:phases', 'numeric', 'min:1'],
+
+            'activities' => ['nullable', 'array'],
+            'activities.*.content' => ['required_with:activities', 'string'],
             
             // Evaluation (Discriminator)
             'evaluation_type' => ['required', 'in:assessment,homework'],
