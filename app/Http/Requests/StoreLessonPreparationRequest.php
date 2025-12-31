@@ -47,8 +47,6 @@ class StoreLessonPreparationRequest extends FormRequest
             'learning_objectives' => ['required', 'array', 'min:1'],
             'learning_objectives.*' => ['string', 'min:1', 'max:500'],
             // Description removed
-            'key_topics' => ['required', 'array', 'min:1'],
-            'key_topics.*' => ['string', 'min:1', 'max:500'],
             'teaching_methods' => ['required', 'array', 'min:1'],
             'teaching_methods.*' => ['string', 'min:1', 'max:100'],
             'resources_needed' => ['nullable', 'array'],
@@ -122,7 +120,6 @@ class StoreLessonPreparationRequest extends FormRequest
             'duration_minutes.min' => 'Duration must be at least 15 minutes.',
             'learning_objectives.required' => 'Add at least one learning objective.',
             'learning_objectives.min' => 'Add at least one learning objective.',
-            'key_topics.required' => 'Add at least one key topic.',
             'teaching_methods.required' => 'Select at least one teaching method.',
             'status.in' => 'The selected status is invalid.',
         ];
