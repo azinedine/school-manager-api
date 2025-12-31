@@ -69,6 +69,7 @@ Route::prefix('v1')->group(function () {
     // Core Data
     Route::get('subjects', [\App\Http\Controllers\Api\V1\SubjectController::class, 'index']);
     Route::get('levels', [\App\Http\Controllers\Api\V1\LevelController::class, 'index']);
+    Route::get('materials', [\App\Http\Controllers\Api\V1\MaterialController::class, 'index']);
 
     // Institutions Read (for selection in registration)
     Route::get('institutions', [InstitutionController::class, 'index']);
