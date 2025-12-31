@@ -34,6 +34,14 @@ class LessonPreparationResource extends JsonResource
             'learning_unit' => $get('learning_unit'),
             'knowledge_resource' => $get('knowledge_resource'),
             'lesson_elements' => $get('lesson_elements', []),
+            
+            // Pedagogical V2 Fields
+            'targeted_knowledge' => $get('targeted_knowledge', []),
+            'used_materials' => $get('used_materials', []),
+            'references' => $get('references', []),
+            'phases' => $get('phases', []),
+            'activities' => $get('activities', []),
+
             'evaluation_type' => $get('evaluation_type'),
             'evaluation_content' => $get('evaluation_content'),
             'status' => $get('status'),
