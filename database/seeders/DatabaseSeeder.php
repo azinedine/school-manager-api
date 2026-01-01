@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             LessonSeeder::class,
             LessonPreparationSeeder::class,
             TeacherLessonSeeder::class,
+            TeacherPreparationSeeder::class,
         ]);
     }
 }
