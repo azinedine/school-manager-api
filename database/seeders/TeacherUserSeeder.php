@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Institution;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -24,6 +25,14 @@ class TeacherUserSeeder extends Seeder
             return;
         }
 
+        // Get the first available institution or create one via factory if none exist (though InstitutionSeeder should have run)
+        $institution = Institution::first();
+        
+        if (!$institution) {
+            $this->command->warn("No institution found. Please run InstitutionSeeder first.");
+            return;
+        }
+
         $user = User::create([
             'name' => env('TEACHER_NAME', 'Teacher User'),
             'email' => $email,
@@ -31,7 +40,18 @@ class TeacherUserSeeder extends Seeder
             'role' => User::ROLE_TEACHER,
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
-            // Teacher specific fields can be added here if needed default values
+            
+            // Institution Link
+            'institution_id' => $institution->id,
+            'user_institution_id' => 'TCH-' . date('Y') . '-001', // Example ID format
+            
+            // Academic Details
+            'subjects' => ['Mathematics', 'Physics', 'Computer Science'],
+            'levels' => ['1AS', '2AS', '3AS'],
+            
+            
+            // Professional Details
+            'years_of_experience' => 5,
             'status' => 'active',
         ]);
 
