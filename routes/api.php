@@ -57,6 +57,33 @@ Route::middleware(['auth:sanctum', 'check.suspended'])->group(function () {
         Route::prefix('super-admin')->name('super-admin.')->group(function () {
              Route::get('users', [\App\Http\Controllers\Api\V1\SuperAdminUserController::class, 'index'])->name('users.index');
         });
+
+        // Grades Management Routes (Teacher)
+        Route::apiResource('grade-classes', \App\Http\Controllers\Api\V1\GradeClassController::class);
+        
+        // Students within a class
+        Route::get('grade-classes/{gradeClass}/students', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'index'])
+            ->name('grade-classes.students.index');
+        Route::post('grade-classes/{gradeClass}/students', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'store'])
+            ->name('grade-classes.students.store');
+        Route::post('grade-classes/{gradeClass}/students/batch', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'batchStore'])
+            ->name('grade-classes.students.batch');
+        Route::post('grade-classes/{gradeClass}/students/reorder', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'reorder'])
+            ->name('grade-classes.students.reorder');
+        
+        // Individual student operations
+        Route::put('grade-students/{gradeStudent}', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'update'])
+            ->name('grade-students.update');
+        Route::delete('grade-students/{gradeStudent}', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'destroy'])
+            ->name('grade-students.destroy');
+        Route::post('grade-students/{gradeStudent}/move', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'move'])
+            ->name('grade-students.move');
+        
+        // Student grades
+        Route::put('grade-students/{gradeStudent}/grades', [\App\Http\Controllers\Api\V1\StudentGradeController::class, 'update'])
+            ->name('grade-students.grades.update');
+        Route::post('grades/batch', [\App\Http\Controllers\Api\V1\StudentGradeController::class, 'batchUpdate'])
+            ->name('grades.batch');
     });
 });
 
