@@ -18,6 +18,15 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
+            // Reference data seeders (needed for dropdowns)
+            MaterialSeeder::class,
+            ReferenceSeeder::class,
+            LearningObjectiveSeeder::class,
+            TeachingMethodSeeder::class,
+            LevelSeeder::class,
+            SubjectSeeder::class,
+            
+            // Core seeders
             WilayaMunicipalitySeeder::class,
             InstitutionSeeder::class,
             SuperAdminSeeder::class,
