@@ -87,7 +87,7 @@ class StoreLessonPreparationRequest extends FormRequest
             
             // Evaluation (Discriminator)
             'evaluation_type' => ['required', 'in:assessment,homework'],
-            'evaluation_content' => ['required', 'string', 'min:3'],
+            'evaluation_content' => ['nullable', 'string', 'min:3'],
         ];
 
         if ($this->isMethod('patch')) {
