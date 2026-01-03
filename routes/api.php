@@ -22,6 +22,10 @@ Route::middleware(['auth:sanctum', 'check.suspended'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::delete('/user', [AuthController::class, 'destroy']);
 
+    // Timetable Routes (at root level to match frontend)
+    Route::get('/timetable', [\App\Http\Controllers\Api\V1\TimetableEntryController::class, 'index']);
+    Route::post('/timetable', [\App\Http\Controllers\Api\V1\TimetableEntryController::class, 'store']);
+
     // V1 API Routes
     Route::prefix('v1')->group(function () {
         // Institutions (Write operations & Restore)
