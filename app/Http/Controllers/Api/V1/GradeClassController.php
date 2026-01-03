@@ -111,4 +111,19 @@ class GradeClassController extends Controller
             'message' => 'Class deleted successfully',
         ]);
     }
+
+    /**
+     * Delete all classes for the authenticated teacher.
+     */
+    public function destroyAll(): JsonResponse
+    {
+        $count = GradeClass::forTeacher(Auth::id())->count();
+        
+        GradeClass::forTeacher(Auth::id())->delete();
+
+        return response()->json([
+            'message' => 'All classes deleted successfully',
+            'deleted_count' => $count,
+        ]);
+    }
 }
