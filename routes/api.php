@@ -64,6 +64,8 @@ Route::middleware(['auth:sanctum', 'check.suspended'])->group(function () {
 
         // Grades Management Routes (Teacher)
         Route::apiResource('grade-classes', \App\Http\Controllers\Api\V1\GradeClassController::class);
+        Route::delete('grade-classes', [\App\Http\Controllers\Api\V1\GradeClassController::class, 'destroyAll'])
+            ->name('grade-classes.destroy-all');
         
         // Students within a class
         Route::get('grade-classes/{gradeClass}/students', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'index'])
