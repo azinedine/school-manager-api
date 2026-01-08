@@ -17,18 +17,8 @@ class AuthService
      */
     public function register(array $data): array
     {
-        $institutionId = null;
-        if (!empty($data['institution'])) {
-            $institution = Institution::firstOrCreate(
-                ['name' => $data['institution']],
-                [
-                    'wilaya_code' => $data['wilaya'] ?? 'UNKNOWN',
-                    'municipality_id' => $data['municipality'] ?? 'UNKNOWN',
-                    'code' => strtoupper(substr($data['institution'], 0, 3)) . rand(1000, 9999),
-                ]
-            );
-            $institutionId = $institution->id;
-        }
+        // Accept institution_id directly from frontend
+        $institutionId = $data['institution_id'] ?? null;
 
         $user = User::create([
             'name' => $data['name'],
@@ -42,12 +32,19 @@ class AuthService
             'linked_student_id' => $data['linked_student_id'] ?? null,
             'subjects' => $data['subjects'] ?? null,
             'levels' => $data['levels'] ?? null,
+            // Admin fields
+            'department' => $data['department'] ?? null,
+            'position' => $data['position'] ?? null,
+            'date_of_hiring' => $data['date_of_hiring'] ?? null,
+            'work_phone' => $data['work_phone'] ?? null,
+            'office_location' => $data['office_location'] ?? null,
+            'notes' => $data['notes'] ?? null,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [
-            'user' => new \App\Http\Resources\UserResource($user),
+            'user' => new \App\Http\Resources\UserResource($user->load('institution')),
             'access_token' => $token,
             'token_type' => 'Bearer',
         ];
@@ -69,11 +66,15 @@ class AuthService
         }
 
         $user = User::where('email', $credentials['email'])->firstOrFail();
+        
+        // Update last login timestamp
+        $user->update(['last_login_at' => now()]);
+        
         $token = $user->createToken('auth_token')->plainTextToken;
 
 
         return [
-            'user' => new \App\Http\Resources\UserResource($user),
+            'user' => new \App\Http\Resources\UserResource($user->load('institution')),
             'access_token' => $token,
             'token_type' => 'Bearer',
         ];

@@ -20,6 +20,22 @@ class AppServiceProvider extends ServiceProvider
             InstitutionRepositoryInterface::class,
             InstitutionRepository::class
         );
+        $this->app->bind(
+            \App\Repositories\Contracts\UserRepositoryInterface::class,
+            \App\Repositories\Eloquent\UserRepository::class
+        );
+        $this->app->bind(
+            \App\Repositories\Contracts\TeacherRepositoryInterface::class,
+            \App\Repositories\Eloquent\TeacherRepository::class
+        );
+        $this->app->bind(
+            \App\Repositories\Contracts\LessonPreparationRepositoryInterface::class,
+            \App\Repositories\LessonPreparationRepository::class
+        );
+        $this->app->bind(
+            \App\Repositories\Contracts\LessonRepositoryInterface::class,
+            \App\Repositories\LessonRepository::class
+        );
     }
 
     /**

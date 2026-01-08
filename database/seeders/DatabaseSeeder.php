@@ -17,9 +17,34 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        $this->call([
+            // Reference data seeders (needed for dropdowns)
+            MaterialSeeder::class,
+            ReferenceSeeder::class,
+            LearningObjectiveSeeder::class,
+            TeachingMethodSeeder::class,
+            LevelSeeder::class,
+            SubjectSeeder::class,
+            
+            // Core seeders
+            WilayaMunicipalitySeeder::class,
+            InstitutionSeeder::class,
+            SuperAdminSeeder::class,
+            AdminUserSeeder::class,
+            TeacherUserSeeder::class,
+        ]);
+
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'role' => 'teacher',
+        ]);
+
+        $this->call([
+            LessonSeeder::class,
+            LessonPreparationSeeder::class,
+            TeacherLessonSeeder::class,
+            TeacherPreparationSeeder::class,
         ]);
     }
 }

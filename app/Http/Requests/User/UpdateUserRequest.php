@@ -13,7 +13,9 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->route('user'));
+        $user = $this->route('user'); // The user resource being updated
+        // Allow if user is updating themselves OR has permission to update others
+        return $this->user()->id === $user->id || $this->user()->can('update', $user);
     }
 
     /**
@@ -32,6 +34,17 @@ class UpdateUserRequest extends FormRequest
             'wilaya' => ['nullable', 'string'],
             'municipality' => ['nullable', 'string'],
             'institution_id' => ['nullable', 'exists:institutions,id'],
+            
+            // Extended Profile Fields
+            'name_ar' => ['nullable', 'string', 'max:255'],
+            'gender' => ['nullable', 'string', 'in:male,female'],
+            'date_of_birth' => ['nullable', 'date'],
+            'address' => ['nullable', 'string', 'max:500'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'work_phone' => ['nullable', 'string', 'max:20'],
+            'office_location' => ['nullable', 'string', 'max:255'],
+            'date_of_hiring' => ['nullable', 'date'],
+            'years_of_experience' => ['nullable', 'integer'],
         ];
     }
 }
