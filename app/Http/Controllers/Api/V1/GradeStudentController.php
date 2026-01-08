@@ -30,7 +30,9 @@ class GradeStudentController extends Controller
             ->orderBy('sort_order')
             ->get()
             ->map(function ($student) use ($term) {
-                $grades = $student->grades->first();
+                // Get or create term grades to ensure they always exist
+                $grades = $student->grades->first() ?? $student->getOrCreateTermGrades($term);
+                
                 return [
                     'id' => $student->id,
                     'student_number' => $student->student_number,
@@ -39,11 +41,11 @@ class GradeStudentController extends Controller
                     'date_of_birth' => $student->date_of_birth?->format('Y-m-d'),
                     'special_case' => $student->special_case,
                     'sort_order' => $student->sort_order,
-                    'behavior' => $grades->behavior ?? 5,
-                    'applications' => $grades->applications ?? 5,
-                    'notebook' => $grades->notebook ?? 5,
-                    'assignment' => $grades->assignment ?? 0,
-                    'exam' => $grades->exam ?? 0,
+                    'behavior' => $grades->behavior,
+                    'applications' => $grades->applications,
+                    'notebook' => $grades->notebook,
+                    'assignment' => $grades->assignment,
+                    'exam' => $grades->exam,
                 ];
             });
 
