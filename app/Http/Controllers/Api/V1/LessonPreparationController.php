@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLessonPreparationRequest;
 use App\Http\Resources\LessonPreparationResource;
+use App\Models\LessonPreparation;
 use App\Services\LessonPreparationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,13 +24,11 @@ class LessonPreparationController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        // Authorize: User can only see their own lesson preparations
-        $teacherId = auth()->id();
+        $this->authorize('viewAny', LessonPreparation::class);
 
-        // Get filters from request
+        $teacherId = auth()->id();
         $filters = $request->only(['status', 'class', 'subject']);
 
-        // Fetch lesson preparations
         $preparations = $this->service->getPreparations($teacherId, $filters);
 
         return response()->json(
@@ -42,9 +41,10 @@ class LessonPreparationController extends Controller
      */
     public function store(StoreLessonPreparationRequest $request): JsonResponse
     {
+        $this->authorize('create', LessonPreparation::class);
+
         $teacherId = auth()->id();
 
-        // Create the lesson preparation
         $preparation = $this->service->createPreparation(
             $teacherId,
             $request->validated()
@@ -63,13 +63,14 @@ class LessonPreparationController extends Controller
     {
         $preparation = $this->service->getPreparation($id);
 
-        // Authorize: User can only see their own preparation
-        if (!$preparation || $preparation->teacher_id !== auth()->id()) {
+        if (!$preparation) {
             return response()->json(
                 ['error' => 'Lesson preparation not found'],
                 404
             );
         }
+
+        $this->authorize('view', $preparation);
 
         return response()->json(
             new LessonPreparationResource($preparation)
@@ -83,15 +84,15 @@ class LessonPreparationController extends Controller
     {
         $preparation = $this->service->getPreparation($id);
 
-        // Authorize: User can only edit their own preparation
-        if (!$preparation || $preparation->teacher_id !== auth()->id()) {
+        if (!$preparation) {
             return response()->json(
                 ['error' => 'Lesson preparation not found'],
                 404
             );
         }
 
-        // Update the preparation
+        $this->authorize('update', $preparation);
+
         $preparation = $this->service->updatePreparation($id, $request->validated());
 
         return response()->json(
@@ -106,15 +107,15 @@ class LessonPreparationController extends Controller
     {
         $preparation = $this->service->getPreparation($id);
 
-        // Authorize: User can only delete their own preparation
-        if (!$preparation || $preparation->teacher_id !== auth()->id()) {
+        if (!$preparation) {
             return response()->json(
                 ['error' => 'Lesson preparation not found'],
                 404
             );
         }
 
-        // Delete the preparation
+        $this->authorize('delete', $preparation);
+
         $this->service->deletePreparation($id);
 
         return response()->json(
