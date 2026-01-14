@@ -24,14 +24,22 @@ class GradeStudentController extends Controller
         $term = $request->query('term', 1);
 
         $students = $gradeClass->students()
-            ->with(['grades' => function ($q) use ($term) {
-                $q->where('term', $term);
-            }])
+            ->with([
+                'grades' => function ($q) use ($term) {
+                    $q->where('term', $term);
+                },
+                'pedagogicalTracking' => function ($q) use ($term) {
+                    $q->where('term', $term);
+                }
+            ])
             ->orderBy('sort_order')
             ->get()
             ->map(function ($student) use ($term) {
                 // Get or create term grades to ensure they always exist
                 $grades = $student->grades->first() ?? $student->getOrCreateTermGrades($term);
+                
+                // Get or create term tracking
+                $tracking = $student->pedagogicalTracking->first() ?? $student->getOrCreateTermTracking($term);
                 
                 return [
                     'id' => $student->id,
@@ -46,6 +54,11 @@ class GradeStudentController extends Controller
                     'notebook' => $grades->notebook,
                     'assignment' => $grades->assignment,
                     'exam' => $grades->exam,
+                    // Pedagogical tracking fields
+                    'oral_interrogation' => $tracking->oral_interrogation,
+                    'notebook_checked' => $tracking->notebook_checked,
+                    'last_interrogation_at' => $tracking->last_interrogation_at?->toISOString(),
+                    'last_notebook_check_at' => $tracking->last_notebook_check_at?->toISOString(),
                 ];
             });
 
