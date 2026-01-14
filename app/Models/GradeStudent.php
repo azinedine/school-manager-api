@@ -67,4 +67,34 @@ class GradeStudent extends Model
             ]
         );
     }
+
+    /**
+     * Get all pedagogical tracking records for this student.
+     */
+    public function pedagogicalTracking(): HasMany
+    {
+        return $this->hasMany(StudentPedagogicalTracking::class);
+    }
+
+    /**
+     * Get tracking for a specific term.
+     */
+    public function trackingForTerm(int $term): HasOne
+    {
+        return $this->hasOne(StudentPedagogicalTracking::class)->where('term', $term);
+    }
+
+    /**
+     * Get or create tracking for a specific term.
+     */
+    public function getOrCreateTermTracking(int $term): StudentPedagogicalTracking
+    {
+        return $this->pedagogicalTracking()->firstOrCreate(
+            ['term' => $term],
+            [
+                'oral_interrogation' => false,
+                'notebook_checked' => false,
+            ]
+        );
+    }
 }
