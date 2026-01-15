@@ -71,7 +71,7 @@ class CreateSuperAdmin extends Command
             // Update existing user to super_admin
             $existingUser->update([
                 'name' => $name,
-                'password' => Hash::make($password),
+                'password' => $password,
                 'role' => 'super_admin',
             ]);
 
@@ -93,7 +93,7 @@ class CreateSuperAdmin extends Command
         $user = User::create([
             'name' => $name,
             'email' => $email,
-            'password' => Hash::make($password),
+            'password' => $password,
             'role' => 'super_admin',
             'email_verified_at' => now(),
         ]);
