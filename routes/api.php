@@ -90,6 +90,13 @@ Route::middleware(['auth:sanctum', 'check.suspended'])->group(function () {
             ->name('grade-students.grades.update');
         Route::post('grades/batch', [\App\Http\Controllers\Api\V1\StudentGradeController::class, 'batchUpdate'])
             ->name('grades.batch');
+        
+        // Pedagogical tracking
+        Route::put('grade-students/{gradeStudent}/tracking', [\App\Http\Controllers\Api\V1\StudentPedagogicalTrackingController::class, 'update'])
+            ->name('grade-students.tracking.update');
+            
+        // Student Reports
+        Route::apiResource('student-reports', \App\Http\Controllers\StudentReportController::class);
     });
 });
 

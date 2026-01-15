@@ -31,21 +31,12 @@ class LessonPolicy
 
     /**
      * Determine whether the user can view the lesson.
+     * Only the owner can view their lesson.
      */
     public function view(User $user, Lesson $lesson): bool
     {
-        // Owner can always view
-        if ($user->id === $lesson->teacher_id) {
-            return true;
-        }
-
-        // Admin/Manager can view lessons in their institution
-        if (($user->isAdmin() || $user->isManager()) && 
-            $user->institution_id === $lesson->institution_id) {
-            return true;
-        }
-
-        return false;
+        // Only owner can view
+        return $user->id === $lesson->teacher_id;
     }
 
     /**
@@ -68,55 +59,31 @@ class LessonPolicy
 
     /**
      * Determine whether the user can delete the lesson.
-     * Owner can delete their own lessons.
-     * Admin/Manager can delete lessons in their institution.
+     * Only the owner can delete their lesson.
      */
     public function delete(User $user, Lesson $lesson): bool
     {
-        // Owner can always delete
-        if ($user->id === $lesson->teacher_id) {
-            return true;
-        }
-
-        // Admin/Manager can delete lessons in their institution
-        if (($user->isAdmin() || $user->isManager()) && 
-            $user->institution_id === $lesson->institution_id) {
-            return true;
-        }
-
-        return false;
+        // Only owner can delete
+        return $user->id === $lesson->teacher_id;
     }
 
     /**
      * Determine whether the user can restore the lesson.
+     * Only the owner can restore their lesson.
      */
     public function restore(User $user, Lesson $lesson): bool
     {
-        // Owner can restore their own
-        if ($user->id === $lesson->teacher_id) {
-            return true;
-        }
-
-        // Admin/Manager can restore in their institution
-        if (($user->isAdmin() || $user->isManager()) && 
-            $user->institution_id === $lesson->institution_id) {
-            return true;
-        }
-
-        return false;
+        // Only owner can restore
+        return $user->id === $lesson->teacher_id;
     }
 
     /**
      * Determine whether the user can permanently delete the lesson.
+     * Only super admin can force delete.
      */
     public function forceDelete(User $user, Lesson $lesson): bool
     {
-        // Only allow within same institution for admins
-        if (($user->isAdmin() || $user->isManager()) && 
-            $user->institution_id === $lesson->institution_id) {
-            return true;
-        }
-
+        // Only super admin via before() method
         return false;
     }
 }
