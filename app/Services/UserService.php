@@ -12,7 +12,7 @@ class UserService
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => $data['password'],
             'role' => $data['role'],
             'wilaya' => $data['wilaya'] ?? null,
             'municipality' => $data['municipality'] ?? null,
@@ -23,7 +23,7 @@ class UserService
     public function update(User $user, array $data): User
     {
         if (isset($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
+            $data['password'] = $data['password'];
         }
 
         $user->update($data);
