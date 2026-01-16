@@ -18,7 +18,7 @@ class SuperAdminUserController extends Controller
     {
         // Enforce Super Admin Role strictly
         if ($request->user()->role !== User::ROLE_SUPER_ADMIN) {
-             abort(403, 'Unauthorized. Super Admin access required.');
+            abort(403, 'Unauthorized. Super Admin access required.');
         }
 
         // Standard Policy Check (though role check above is stronger/specific)
@@ -34,12 +34,12 @@ class SuperAdminUserController extends Controller
 
         if ($request->has('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
-        
+
         if ($request->has('institution_id')) {
             $query->where('institution_id', $request->institution_id);
         }
