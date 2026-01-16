@@ -1,3 +1,12 @@
+# ====================================
+# DEFAULT DOCKER COMPOSE (SAFE MODE)
+# ====================================
+# This is the SAFE default configuration
+# - NO auto-seeding (prevents data overwrites)
+# - Minimal auto-operations
+# - For development, use: docker-compose -f docker-compose.dev.yml up
+# - For production, use: docker-compose -f docker-compose.prod.yml up
+# ====================================
 
 services:
   # MySQL Database
@@ -56,16 +65,12 @@ services:
       - backend-network
     command: >
       sh -c "
+        echo '⚙️  Starting School Manager API...' &&
         php artisan config:cache &&
         php artisan route:cache &&
-        php artisan migrate --force || true &&
-        php artisan db:seed --class=SubjectSeeder --force || true &&
-        php artisan db:seed --class=LevelSeeder --force || true &&
-        php artisan db:seed --class=WilayaMunicipalitySeeder --force || true &&
-        php artisan db:seed --class=MaterialSeeder --force || true &&
-        php artisan db:seed --class=ReferenceSeeder --force || true &&
-        php artisan db:seed --class=LearningObjectiveSeeder --force || true &&
-        php artisan db:seed --class=TeachingMethodSeeder --force || true &&
+        echo '⚠️  Migrations and seeders are NOT run automatically' &&
+        echo '⚠️  Run manually: docker-compose exec api php artisan migrate' &&
+        echo '✅ API ready!' &&
         apache2-foreground
       "
 
@@ -76,3 +81,5 @@ networks:
 volumes:
   mysql_data:
     driver: local
+    # IMPORTANT: This volume persists your database
+    # To remove: docker-compose down -v (USE WITH CAUTION!)
