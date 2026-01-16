@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
-use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
@@ -36,7 +35,7 @@ class UserController extends Controller
         if ($request->has('institution_id')) {
             $query->where('institution_id', $request->institution_id);
         }
-        
+
         // Filter by user permissions if needed (e.g. Manager only sees own school?) - for future.
         // Current policy just allows viewAny.
 
@@ -69,7 +68,7 @@ class UserController extends Controller
      * Update the specified resource in storage.
      */
     public function update(
-        \App\Http\Requests\User\UpdateUserProfileRequest $request, 
+        \App\Http\Requests\User\UpdateUserProfileRequest $request,
         User $user,
         \App\UseCases\User\UpdateUserProfileUseCase $updateUserProfileUseCase
     ) {
