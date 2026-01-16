@@ -45,5 +45,38 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register model observers
         Institution::observe(InstitutionObserver::class);
+
+        // Production Safety: Disable destructive commands
+        $this->disableDestructiveCommands();
+    }
+
+    /**
+     * Disable destructive database commands in production
+     */
+    private function disableDestructiveCommands(): void
+    {
+        if ($this->app->environment('production', 'staging')) {
+            // Disable destructive migration commands
+            $destructiveCommands = [
+                'migrate:fresh',
+                'migrate:refresh',
+                'migrate:reset',
+                'db:wipe',
+            ];
+
+            foreach ($destructiveCommands as $command) {
+                $this->app->extend("command.{$command}", function () {
+                    return new class {
+                        public function __invoke()
+                        {
+                            throw new \RuntimeException(
+                                '🚨 DESTRUCTIVE COMMAND BLOCKED: This command is disabled in production/staging environments to prevent data loss. '.
+                                'If you absolutely need to run this, temporarily set APP_ENV=local in your .env file.'
+                            );
+                        }
+                    };
+                });
+            }
+        }
     }
 }
