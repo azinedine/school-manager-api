@@ -5,8 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -39,14 +39,14 @@ class User extends Authenticatable
         'work_phone',
         'office_location',
         'notes',
-        
+
         // Extended Profile
         'name_ar',
         'gender',
         'date_of_birth',
         'address',
         'phone',
-        
+
         // Teacher Specific
         'teacher_id',
         'years_of_experience',
@@ -82,12 +82,18 @@ class User extends Authenticatable
             'levels' => 'array',
         ];
     }
+
     // Role Constants
     const ROLE_SUPER_ADMIN = 'super_admin';
+
     const ROLE_ADMIN = 'admin';
+
     const ROLE_MANAGER = 'manager';
+
     const ROLE_TEACHER = 'teacher';
+
     const ROLE_STUDENT = 'student';
+
     const ROLE_PARENT = 'parent';
 
     // Helper Methods
