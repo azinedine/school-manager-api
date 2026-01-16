@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -51,7 +49,7 @@ class AuthController extends Controller
         $this->authService->logout($request->user());
 
         return response()->json([
-            'message' => 'Logged out successfully'
+            'message' => 'Logged out successfully',
         ]);
     }
 
@@ -60,7 +58,7 @@ class AuthController extends Controller
         $this->authService->deleteAccount($request->user());
 
         return response()->json([
-            'message' => 'Account deleted successfully'
+            'message' => 'Account deleted successfully',
         ]);
     }
 }
