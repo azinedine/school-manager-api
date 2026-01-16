@@ -15,14 +15,14 @@ return new class extends Migration
             $table->string('role')->default('student'); // admin, teacher, student, parent
             $table->string('wilaya')->nullable();
             $table->string('municipality')->nullable();
-            
+
             // Foreign key to institutions
             $table->foreignId('institution_id')->nullable()->constrained('institutions')->nullOnDelete();
-            
+
             // Student specific
             $table->string('class')->nullable();
             $table->string('linked_student_id')->nullable(); // For parents
-            
+
             // Teacher specific
             $table->json('subjects')->nullable();
             $table->json('levels')->nullable();

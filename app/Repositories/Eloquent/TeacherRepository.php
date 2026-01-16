@@ -2,15 +2,15 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Repositories\Contracts\TeacherRepositoryInterface;
 use App\Models\User;
+use App\Repositories\Contracts\TeacherRepositoryInterface;
 
 class TeacherRepository implements TeacherRepositoryInterface
 {
     /**
      * Get all teachers with pagination.
      *
-     * @param int $perPage
+     * @param  int  $perPage
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getAllTeachers($perPage = 20)

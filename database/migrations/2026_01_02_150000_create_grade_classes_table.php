@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('grade_level')->nullable(); // e.g., "4th Year Middle School"
             $table->string('academic_year'); // e.g., "2024-2025"
             $table->timestamps();
-            
+
             $table->index(['user_id', 'academic_year']);
         });
     }

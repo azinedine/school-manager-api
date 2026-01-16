@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\StudentReport;
-use App\Models\GradeStudent;
 use App\Http\Resources\StudentReportResource;
+use App\Models\GradeStudent;
+use App\Models\StudentReport;
 use Illuminate\Http\Request;
 
 class StudentReportController extends Controller
@@ -22,7 +22,7 @@ class StudentReportController extends Controller
                 $q->where('grade_class_id', $request->class_id);
             });
         }
-        
+
         return StudentReportResource::collection($query->latest()->paginate(15));
     }
 
@@ -39,8 +39,8 @@ class StudentReportController extends Controller
         // Auto-resolve relationships
         $student = GradeStudent::findOrFail($validated['student_id']);
         // Assuming the authenticated user is the teacher
-        $teacher = $request->user(); 
-        
+        $teacher = $request->user();
+
         // Find institution from student's class
         $institutionId = $student->grade_class->institution_id ?? 1; // Fallback or logic needed
 
@@ -56,11 +56,11 @@ class StudentReportController extends Controller
             'incident_description' => $validated['incident_description'],
             'sanctions' => $validated['sanctions'],
             'other_sanction' => $validated['other_sanction'],
-            'status' => 'finalized', 
+            'status' => 'finalized',
             'meta' => [
                 'class_name' => $student->grade_class->name ?? 'Unknown',
                 'student_name' => "$student->first_name $student->last_name",
-            ]
+            ],
         ]);
 
         return new StudentReportResource($report);
@@ -73,7 +73,7 @@ class StudentReportController extends Controller
 
     public function update(Request $request, StudentReport $studentReport)
     {
-         // Add policy check later
+        // Add policy check later
         $validated = $request->validate([
             'incident_description' => 'string',
             'sanctions' => 'nullable|array',
@@ -88,6 +88,7 @@ class StudentReportController extends Controller
     public function destroy(StudentReport $studentReport)
     {
         $studentReport->delete();
+
         return response()->noContent();
     }
 
@@ -95,6 +96,7 @@ class StudentReportController extends Controller
     {
         // Simple generation logic, can be improved
         $count = StudentReport::where('institution_id', $institutionId)->count();
+
         return sprintf('R-%04d', $count + 1);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Lesson;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class LessonPolicy
 {
@@ -16,6 +15,7 @@ class LessonPolicy
         if ($user->isSuperAdmin()) {
             return true;
         }
+
         return null;
     }
 

@@ -53,7 +53,7 @@ class LessonPreparationRepository implements LessonPreparationRepositoryInterfac
     {
         $preparation = $this->findById($id);
 
-        if (!$preparation) {
+        if (! $preparation) {
             throw new \Exception("Lesson preparation with ID {$id} not found");
         }
 
@@ -69,7 +69,7 @@ class LessonPreparationRepository implements LessonPreparationRepositoryInterfac
     {
         $preparation = $this->findById($id);
 
-        if (!$preparation) {
+        if (! $preparation) {
             return false;
         }
 

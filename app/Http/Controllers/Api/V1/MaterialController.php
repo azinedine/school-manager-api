@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Material;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
@@ -15,7 +15,7 @@ class MaterialController extends Controller
     public function index(): JsonResponse
     {
         return response()->json([
-            'data' => Material::orderBy('name')->get()
+            'data' => Material::orderBy('name')->get(),
         ]);
     }
 
@@ -33,7 +33,7 @@ class MaterialController extends Controller
 
         return response()->json([
             'message' => 'Material created successfully',
-            'data' => $material
+            'data' => $material,
         ], 201);
     }
 
@@ -43,7 +43,7 @@ class MaterialController extends Controller
     public function show(Material $material): JsonResponse
     {
         return response()->json([
-            'data' => $material
+            'data' => $material,
         ]);
     }
 
@@ -53,7 +53,7 @@ class MaterialController extends Controller
     public function update(Request $request, Material $material): JsonResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:materials,name,' . $material->id,
+            'name' => 'required|string|max:255|unique:materials,name,'.$material->id,
             'name_ar' => 'nullable|string|max:255',
         ]);
 
@@ -61,7 +61,7 @@ class MaterialController extends Controller
 
         return response()->json([
             'message' => 'Material updated successfully',
-            'data' => $material
+            'data' => $material,
         ]);
     }
 
@@ -73,7 +73,7 @@ class MaterialController extends Controller
         $material->delete();
 
         return response()->json([
-            'message' => 'Material deleted successfully'
+            'message' => 'Material deleted successfully',
         ]);
     }
 }

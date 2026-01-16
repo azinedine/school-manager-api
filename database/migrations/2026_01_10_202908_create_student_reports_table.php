@@ -15,26 +15,27 @@ return new class extends Migration
             $table->id();
             $table->foreignId('institution_id')->constrained()->cascadeOnDelete();
             $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('student_id')->constrained('grade_students')->cascadeOnDelete();
-            
+            $table->uuid('student_id');
+            $table->foreign('student_id')->references('id')->on('grade_students')->cascadeOnDelete();
+
             $table->string('report_number');
             $table->string('academic_year'); // e.g., "2024-2025"
             $table->date('report_date');
-            
+
             $table->text('incident_description');
-            
+
             // JSON array of selected sanctions keys (e.g., ['parent_summons', 'written_warning'])
-            $table->json('sanctions')->nullable(); 
+            $table->json('sanctions')->nullable();
             $table->string('other_sanction')->nullable();
-            
+
             $table->string('status')->default('draft'); // draft, formalized
-            
+
             // Snapshot of student data at time of report (class, name, etc.)
             // Essential for historical accuracy if student moves classes
-            $table->json('meta')->nullable(); 
-            
+            $table->json('meta')->nullable();
+
             $table->timestamps();
-            
+
             // Indexes for common queries
             $table->index(['institution_id', 'academic_year']);
             $table->index('student_id');

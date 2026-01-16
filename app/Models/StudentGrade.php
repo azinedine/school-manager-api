@@ -41,6 +41,7 @@ class StudentGrade extends Model
     public function getContinuousAssessmentAttribute(): float
     {
         $total = $this->behavior + $this->applications + $this->notebook;
+
         return round(($total / 15) * 20, 2);
     }
 

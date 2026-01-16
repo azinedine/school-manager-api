@@ -18,8 +18,9 @@ class TeacherPreparationSeeder extends Seeder
         $teacherEmail = env('TEACHER_EMAIL', 'teacher@school.com');
         $teacher = User::where('email', $teacherEmail)->first();
 
-        if (!$teacher) {
+        if (! $teacher) {
             $this->command->warn("Teacher {$teacherEmail} not found. Please run TeacherUserSeeder first.");
+
             return;
         }
 

@@ -24,7 +24,7 @@ class LessonSeeder extends Seeder
                 'institution_id' => $institution->id,
                 'teacher_id' => $teacher->id,
             ]);
-        
+
         // Also create some random ones
         Lesson::factory()
             ->count(5)

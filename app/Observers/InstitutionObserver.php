@@ -57,7 +57,7 @@ class InstitutionObserver
             'user_id' => Auth::id(),
             'user_email' => Auth::user()?->email,
             'ip_address' => request()->ip(),
-            'soft_delete' => !$institution->isForceDeleting(),
+            'soft_delete' => ! $institution->isForceDeleting(),
         ]);
     }
 

@@ -15,7 +15,7 @@ class TimetableEntryController extends Controller
     public function index(): JsonResponse
     {
         $entries = auth()->user()->timetableEntries;
-        
+
         return response()->json($entries);
     }
 

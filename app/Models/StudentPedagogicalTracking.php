@@ -61,7 +61,7 @@ class StudentPedagogicalTracking extends Model
      */
     public function toggleInterrogation(): void
     {
-        $newStatus = !$this->oral_interrogation;
+        $newStatus = ! $this->oral_interrogation;
         $this->update([
             'oral_interrogation' => $newStatus,
             'last_interrogation_at' => $newStatus ? now() : $this->last_interrogation_at,
@@ -73,7 +73,7 @@ class StudentPedagogicalTracking extends Model
      */
     public function toggleNotebookChecked(): void
     {
-        $newStatus = !$this->notebook_checked;
+        $newStatus = ! $this->notebook_checked;
         $this->update([
             'notebook_checked' => $newStatus,
             'last_notebook_check_at' => $newStatus ? now() : $this->last_notebook_check_at,

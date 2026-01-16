@@ -25,7 +25,7 @@ class StudentReportResource extends JsonResource
             'status' => $this->status,
             'student' => [
                 'id' => $this->student->id,
-                'name' => $this->student->first_name . ' ' . $this->student->last_name,
+                'name' => $this->student->first_name.' '.$this->student->last_name,
                 'class' => $this->meta['class_name'] ?? null, // Fallback to meta if available
             ],
             'teacher' => [

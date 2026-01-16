@@ -21,12 +21,12 @@ return new class extends Migration
             $table->decimal('assignment', 4, 2)->default(0); // 0-20
             $table->decimal('exam', 4, 2)->default(0); // 0-20
             $table->timestamps();
-            
+
             $table->foreign('grade_student_id')
-                  ->references('id')
-                  ->on('grade_students')
-                  ->onDelete('cascade');
-                  
+                ->references('id')
+                ->on('grade_students')
+                ->onDelete('cascade');
+
             $table->unique(['grade_student_id', 'term']);
             $table->index('grade_student_id');
         });
