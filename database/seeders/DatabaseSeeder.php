@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             TeachingMethodSeeder::class,
             LevelSeeder::class,
             SubjectSeeder::class,
-            
+
             // Core seeders
             WilayaMunicipalitySeeder::class,
             InstitutionSeeder::class,
