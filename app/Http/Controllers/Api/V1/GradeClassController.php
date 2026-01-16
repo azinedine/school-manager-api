@@ -16,18 +16,18 @@ class GradeClassController extends Controller
     public function index(Request $request): JsonResponse
     {
         $year = $request->query('year');
-        
+
         $query = GradeClass::forTeacher(Auth::id())
             ->with(['students' => function ($q) {
                 $q->orderBy('sort_order');
             }]);
-        
+
         if ($year) {
             $query->forYear($year);
         }
-        
+
         $classes = $query->orderBy('name')->get();
-        
+
         return response()->json([
             'data' => $classes,
         ]);
@@ -118,7 +118,7 @@ class GradeClassController extends Controller
     public function destroyAll(): JsonResponse
     {
         $count = GradeClass::forTeacher(Auth::id())->count();
-        
+
         GradeClass::forTeacher(Auth::id())->delete();
 
         return response()->json([

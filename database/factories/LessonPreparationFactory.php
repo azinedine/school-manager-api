@@ -40,7 +40,7 @@ class LessonPreparationFactory extends Factory
             'assessment_criteria' => $this->faker->sentence(),
             'notes' => $this->faker->optional()->paragraph(),
             'status' => $this->faker->randomElement(['draft', 'ready', 'delivered']),
-            
+
             // Pedagogical Fields
             'domain' => $this->faker->word(),
             'learning_unit' => $this->faker->words(2, true),
@@ -51,7 +51,7 @@ class LessonPreparationFactory extends Factory
             ],
             'evaluation_type' => $this->faker->randomElement(['assessment', 'homework']),
             'evaluation_content' => $this->faker->paragraph(),
-            
+
             // New Fields
             'targeted_knowledge' => $this->faker->sentences(2),
             'used_materials' => $this->faker->words(3),

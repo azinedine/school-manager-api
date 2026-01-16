@@ -17,7 +17,7 @@ class StoreLessonRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     * 
+     *
      * NOTE: subject_name is NOT included in validation.
      * Subject is identity-bound to the teacher and resolved from auth user.
      *
@@ -33,7 +33,7 @@ class StoreLessonRequest extends FormRequest
                 'required',
                 'string',
                 'max:20',
-                'regex:/^\d{4}-\d{4}$/' // Format: 2024-2025
+                'regex:/^\d{4}-\d{4}$/', // Format: 2024-2025
             ],
             'class_name' => ['required', 'string', 'min:1', 'max:100'],
             // NOTE: subject_name removed - resolved from authenticated teacher

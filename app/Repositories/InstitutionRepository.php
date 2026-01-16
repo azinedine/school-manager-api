@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Cache;
 class InstitutionRepository implements InstitutionRepositoryInterface
 {
     private const CACHE_TTL = 3600; // 1 hour
+
     private const CACHE_PREFIX = 'institutions:';
 
     public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
@@ -24,11 +25,12 @@ class InstitutionRepository implements InstitutionRepositoryInterface
 
     public function all(array $filters = []): Collection
     {
-        $cacheKey = self::CACHE_PREFIX . 'all:' . md5(json_encode($filters));
+        $cacheKey = self::CACHE_PREFIX.'all:'.md5(json_encode($filters));
 
         return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($filters) {
             $query = Institution::query()->with(['wilaya', 'municipality']);
             $this->applyFilters($query, $filters);
+
             return $query->orderBy('name')->get();
         });
     }
@@ -36,7 +38,7 @@ class InstitutionRepository implements InstitutionRepositoryInterface
     public function find(int $id): ?Institution
     {
         return Cache::remember(
-            self::CACHE_PREFIX . $id,
+            self::CACHE_PREFIX.$id,
             self::CACHE_TTL,
             fn () => Institution::with(['wilaya', 'municipality'])->find($id)
         );
@@ -51,7 +53,7 @@ class InstitutionRepository implements InstitutionRepositoryInterface
     {
         $institution = Institution::create($data);
         $this->clearCache();
-        
+
         return $institution->load(['wilaya', 'municipality']);
     }
 
@@ -94,7 +96,7 @@ class InstitutionRepository implements InstitutionRepositoryInterface
     public function getByWilaya(int $wilayaId): Collection
     {
         return Cache::remember(
-            self::CACHE_PREFIX . 'wilaya:' . $wilayaId,
+            self::CACHE_PREFIX.'wilaya:'.$wilayaId,
             self::CACHE_TTL,
             fn () => Institution::with(['municipality'])
                 ->inWilaya($wilayaId)
@@ -107,7 +109,7 @@ class InstitutionRepository implements InstitutionRepositoryInterface
     public function getByMunicipality(int $municipalityId): Collection
     {
         return Cache::remember(
-            self::CACHE_PREFIX . 'municipality:' . $municipalityId,
+            self::CACHE_PREFIX.'municipality:'.$municipalityId,
             self::CACHE_TTL,
             fn () => Institution::inMunicipality($municipalityId)
                 ->active()
@@ -121,15 +123,15 @@ class InstitutionRepository implements InstitutionRepositoryInterface
      */
     private function applyFilters($query, array $filters): void
     {
-        if (!empty($filters['wilaya_id'])) {
+        if (! empty($filters['wilaya_id'])) {
             $query->inWilaya($filters['wilaya_id']);
         }
 
-        if (!empty($filters['municipality_id'])) {
+        if (! empty($filters['municipality_id'])) {
             $query->inMunicipality($filters['municipality_id']);
         }
 
-        if (!empty($filters['type'])) {
+        if (! empty($filters['type'])) {
             $query->ofType($filters['type']);
         }
 
@@ -137,12 +139,12 @@ class InstitutionRepository implements InstitutionRepositoryInterface
             $query->where('is_active', $filters['is_active']);
         }
 
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('name_ar', 'like', "%{$search}%")
-                  ->orWhere('address', 'like', "%{$search}%");
+                    ->orWhere('name_ar', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%");
             });
         }
 
@@ -156,7 +158,7 @@ class InstitutionRepository implements InstitutionRepositoryInterface
      */
     private function clearCache(): void
     {
-        Cache::forget(self::CACHE_PREFIX . 'all:' . md5(json_encode([])));
+        Cache::forget(self::CACHE_PREFIX.'all:'.md5(json_encode([])));
         // In production, use cache tags for more efficient invalidation
     }
 
@@ -165,6 +167,6 @@ class InstitutionRepository implements InstitutionRepositoryInterface
      */
     private function clearInstanceCache(int $id): void
     {
-        Cache::forget(self::CACHE_PREFIX . $id);
+        Cache::forget(self::CACHE_PREFIX.$id);
     }
 }

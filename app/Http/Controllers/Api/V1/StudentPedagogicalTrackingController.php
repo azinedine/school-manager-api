@@ -33,7 +33,7 @@ class StudentPedagogicalTrackingController extends Controller
         if (isset($validated['oral_interrogation'])) {
             $updateData['oral_interrogation'] = $validated['oral_interrogation'];
             // Set timestamp only when toggling to true
-            if ($validated['oral_interrogation'] && !$tracking->oral_interrogation) {
+            if ($validated['oral_interrogation'] && ! $tracking->oral_interrogation) {
                 $updateData['last_interrogation_at'] = now();
             }
         }
@@ -41,12 +41,12 @@ class StudentPedagogicalTrackingController extends Controller
         if (isset($validated['notebook_checked'])) {
             $updateData['notebook_checked'] = $validated['notebook_checked'];
             // Set timestamp only when toggling to true
-            if ($validated['notebook_checked'] && !$tracking->notebook_checked) {
+            if ($validated['notebook_checked'] && ! $tracking->notebook_checked) {
                 $updateData['last_notebook_check_at'] = now();
             }
         }
 
-        if (!empty($updateData)) {
+        if (! empty($updateData)) {
             $tracking->update($updateData);
         }
 

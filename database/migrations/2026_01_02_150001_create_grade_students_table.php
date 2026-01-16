@@ -21,12 +21,12 @@ return new class extends Migration
             $table->string('special_case')->nullable(); // e.g., "autism", "exemption", "transfer"
             $table->integer('sort_order')->default(0);
             $table->timestamps();
-            
+
             $table->foreign('grade_class_id')
-                  ->references('id')
-                  ->on('grade_classes')
-                  ->onDelete('cascade');
-                  
+                ->references('id')
+                ->on('grade_classes')
+                ->onDelete('cascade');
+
             $table->index('grade_class_id');
         });
     }

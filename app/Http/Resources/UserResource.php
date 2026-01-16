@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -44,7 +43,7 @@ class UserResource extends JsonResource
             'levels' => $this->levels,
             'class' => $this->class,
             'linkedStudentId' => $this->linked_student_id,
-            
+
             // Extended Profile
             'name_ar' => $this->name_ar,
             'gender' => $this->gender,
@@ -59,7 +58,7 @@ class UserResource extends JsonResource
             'weekly_teaching_load' => $this->weekly_teaching_load,
             'assigned_classes' => $this->when($this->isTeacher(), $this->assigned_classes ?? []),
             'groups' => $this->when($this->isTeacher(), $this->groups ?? []),
-            
+
             // Admin/Staff specific fields
             'department' => $this->department,
             'position' => $this->position,

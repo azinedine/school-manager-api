@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\V1\InstitutionController;
 use App\Http\Controllers\Api\V1\WilayaController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -59,14 +58,14 @@ Route::middleware(['auth:sanctum', 'check.suspended'])->group(function () {
 
         // Super Admin Scope Routes
         Route::prefix('super-admin')->name('super-admin.')->group(function () {
-             Route::get('users', [\App\Http\Controllers\Api\V1\SuperAdminUserController::class, 'index'])->name('users.index');
+            Route::get('users', [\App\Http\Controllers\Api\V1\SuperAdminUserController::class, 'index'])->name('users.index');
         });
 
         // Grades Management Routes (Teacher)
         Route::apiResource('grade-classes', \App\Http\Controllers\Api\V1\GradeClassController::class);
         Route::delete('grade-classes', [\App\Http\Controllers\Api\V1\GradeClassController::class, 'destroyAll'])
             ->name('grade-classes.destroy-all');
-        
+
         // Students within a class
         Route::get('grade-classes/{gradeClass}/students', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'index'])
             ->name('grade-classes.students.index');
@@ -76,7 +75,7 @@ Route::middleware(['auth:sanctum', 'check.suspended'])->group(function () {
             ->name('grade-classes.students.batch');
         Route::post('grade-classes/{gradeClass}/students/reorder', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'reorder'])
             ->name('grade-classes.students.reorder');
-        
+
         // Individual student operations
         Route::put('grade-students/{gradeStudent}', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'update'])
             ->name('grade-students.update');
@@ -84,17 +83,17 @@ Route::middleware(['auth:sanctum', 'check.suspended'])->group(function () {
             ->name('grade-students.destroy');
         Route::post('grade-students/{gradeStudent}/move', [\App\Http\Controllers\Api\V1\GradeStudentController::class, 'move'])
             ->name('grade-students.move');
-        
+
         // Student grades
         Route::put('grade-students/{gradeStudent}/grades', [\App\Http\Controllers\Api\V1\StudentGradeController::class, 'update'])
             ->name('grade-students.grades.update');
         Route::post('grades/batch', [\App\Http\Controllers\Api\V1\StudentGradeController::class, 'batchUpdate'])
             ->name('grades.batch');
-        
+
         // Pedagogical tracking
         Route::put('grade-students/{gradeStudent}/tracking', [\App\Http\Controllers\Api\V1\StudentPedagogicalTrackingController::class, 'update'])
             ->name('grade-students.tracking.update');
-            
+
         // Student Reports
         Route::apiResource('student-reports', \App\Http\Controllers\StudentReportController::class);
     });

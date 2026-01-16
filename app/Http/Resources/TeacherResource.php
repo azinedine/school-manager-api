@@ -22,7 +22,7 @@ class TeacherResource extends JsonResource
             'phone' => $this->phone,
             'gender' => $this->gender,
             'date_of_birth' => $this->date_of_birth,
-            
+
             // Resolved Relationships
             'institution' => [
                 'id' => $this->institution?->id,
@@ -47,7 +47,7 @@ class TeacherResource extends JsonResource
             'weekly_teaching_load' => $this->weekly_teaching_load,
             'subjects' => $this->subjects,
             'levels' => $this->levels,
-            
+
             'created_at' => $this->created_at?->toIso8601String(),
         ];
     }

@@ -19,15 +19,17 @@ class TeacherLessonSeeder extends Seeder
         $teacherEmail = env('TEACHER_EMAIL', 'teacher@school.com');
         $teacher = User::where('email', $teacherEmail)->first();
 
-        if (!$teacher) {
+        if (! $teacher) {
             $this->command->warn("Teacher {$teacherEmail} not found. Please run TeacherUserSeeder first.");
+
             return;
         }
 
         $institutionId = $teacher->institution_id ?? Institution::first()->id;
 
-        if (!$institutionId) {
-            $this->command->warn("No institution found to link lessons to.");
+        if (! $institutionId) {
+            $this->command->warn('No institution found to link lessons to.');
+
             return;
         }
 

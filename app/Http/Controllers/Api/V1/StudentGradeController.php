@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\GradeStudent;
-use App\Models\StudentGrade;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -68,19 +67,19 @@ class StudentGradeController extends Controller
         DB::transaction(function () use ($validated, $term, $userId, &$updated) {
             foreach ($validated['grades'] as $gradeData) {
                 $student = GradeStudent::with('gradeClass')->find($gradeData['student_id']);
-                
+
                 // Skip if not owner
-                if (!$student || $student->gradeClass->user_id !== $userId) {
+                if (! $student || $student->gradeClass->user_id !== $userId) {
                     continue;
                 }
 
                 $gradeFields = collect($gradeData)->except('student_id')->toArray();
-                
+
                 $student->grades()->updateOrCreate(
                     ['term' => $term],
                     $gradeFields
                 );
-                
+
                 $updated++;
             }
         });

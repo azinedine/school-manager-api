@@ -4,7 +4,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,10 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
             guests: '/login',
             users: '/home'
         );
-        
+
         // Override for API to avoid redirecting
         $middleware->redirectGuestsTo(fn (Request $request) => $request->is('api/*') ? null : route('login'));
-        
+
         // Register custom middleware aliases
         $middleware->alias([
             'check.suspended' => \App\Http\Middleware\CheckSuspendedUser::class,
@@ -32,6 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*')) {
                 return true;
             }
+
             return $request->expectsJson();
         });
     })->create();

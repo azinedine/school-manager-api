@@ -22,13 +22,13 @@ class RoleController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('display_name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('display_name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
-        $roles = $request->has('per_page') 
-            ? $query->paginate($request->per_page) 
+        $roles = $request->has('per_page')
+            ? $query->paginate($request->per_page)
             : $query->get();
 
         return RoleResource::collection($roles);
@@ -76,14 +76,14 @@ class RoleController extends Controller
         // Prevent deleting system roles
         if ($role->is_system) {
             return response()->json([
-                'message' => 'Cannot delete system roles.'
+                'message' => 'Cannot delete system roles.',
             ], 403);
         }
 
         // Check if role is in use
         if ($role->users()->exists()) {
             return response()->json([
-                'message' => 'Cannot delete role that is assigned to users.'
+                'message' => 'Cannot delete role that is assigned to users.',
             ], 422);
         }
 

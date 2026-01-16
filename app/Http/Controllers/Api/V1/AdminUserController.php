@@ -32,7 +32,7 @@ class AdminUserController extends Controller
             ->whereIn('role', [
                 User::ROLE_ADMIN,
                 User::ROLE_MANAGER,
-                User::ROLE_TEACHER
+                User::ROLE_TEACHER,
             ]);
 
         // Optional Filters
@@ -42,9 +42,9 @@ class AdminUserController extends Controller
 
         if ($request->has('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
 

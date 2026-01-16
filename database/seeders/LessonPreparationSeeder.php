@@ -23,7 +23,7 @@ class LessonPreparationSeeder extends Seeder
                 'teacher_id' => $teacher->id,
                 'status' => 'ready',
             ]);
-        
+
         // Create some draft preparations
         LessonPreparation::factory()
             ->count(5)

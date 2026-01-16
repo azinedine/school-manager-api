@@ -10,27 +10,27 @@ return new class extends Migration
     {
         Schema::table('institutions', function (Blueprint $table) {
             // Only add columns that don't exist
-            if (!Schema::hasColumn('institutions', 'wilaya_id')) {
+            if (! Schema::hasColumn('institutions', 'wilaya_id')) {
                 $table->unsignedBigInteger('wilaya_id')->nullable()->after('id');
                 $table->foreign('wilaya_id')->references('id')->on('wilayas')->nullOnDelete();
             }
-            
-            if (!Schema::hasColumn('institutions', 'name_ar')) {
+
+            if (! Schema::hasColumn('institutions', 'name_ar')) {
                 $table->string('name_ar')->nullable()->after('name');
             }
-            if (!Schema::hasColumn('institutions', 'address')) {
+            if (! Schema::hasColumn('institutions', 'address')) {
                 $table->string('address')->nullable();
             }
-            if (!Schema::hasColumn('institutions', 'phone')) {
+            if (! Schema::hasColumn('institutions', 'phone')) {
                 $table->string('phone')->nullable();
             }
-            if (!Schema::hasColumn('institutions', 'email')) {
+            if (! Schema::hasColumn('institutions', 'email')) {
                 $table->string('email')->nullable();
             }
-            if (!Schema::hasColumn('institutions', 'is_active')) {
+            if (! Schema::hasColumn('institutions', 'is_active')) {
                 $table->boolean('is_active')->default(true);
             }
-            if (!Schema::hasColumn('institutions', 'deleted_at')) {
+            if (! Schema::hasColumn('institutions', 'deleted_at')) {
                 $table->softDeletes();
             }
         });
@@ -40,7 +40,7 @@ return new class extends Migration
     {
         Schema::table('institutions', function (Blueprint $table) {
             $columns = ['wilaya_id', 'name_ar', 'address', 'phone', 'email', 'is_active', 'deleted_at'];
-            
+
             foreach ($columns as $column) {
                 if (Schema::hasColumn('institutions', $column)) {
                     if ($column === 'wilaya_id') {

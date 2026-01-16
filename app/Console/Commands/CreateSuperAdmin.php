@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class CreateSuperAdmin extends Command
@@ -55,16 +54,18 @@ class CreateSuperAdmin extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->error("❌ {$error}");
             }
+
             return Command::FAILURE;
         }
 
         // Check if user exists
         $existingUser = User::where('email', $email)->first();
-        
+
         if ($existingUser) {
-            if (!$this->option('force')) {
+            if (! $this->option('force')) {
                 $this->error("❌ A user with email {$email} already exists.");
-                $this->info("   Use --force to update the existing user to super_admin.");
+                $this->info('   Use --force to update the existing user to super_admin.');
+
                 return Command::FAILURE;
             }
 
@@ -75,7 +76,7 @@ class CreateSuperAdmin extends Command
                 'role' => 'super_admin',
             ]);
 
-            $this->info("✅ Existing user updated to Super Admin!");
+            $this->info('✅ Existing user updated to Super Admin!');
             $this->table(
                 ['Field', 'Value'],
                 [
@@ -85,7 +86,7 @@ class CreateSuperAdmin extends Command
                     ['Updated At', $existingUser->updated_at->toDateTimeString()],
                 ]
             );
-            
+
             return Command::SUCCESS;
         }
 
@@ -99,7 +100,7 @@ class CreateSuperAdmin extends Command
         ]);
 
         $this->newLine();
-        $this->info("✅ Super Admin created successfully!");
+        $this->info('✅ Super Admin created successfully!');
         $this->table(
             ['Field', 'Value'],
             [
@@ -112,7 +113,7 @@ class CreateSuperAdmin extends Command
         );
 
         $this->newLine();
-        $this->warn("⚠️  Store these credentials securely. The password cannot be recovered.");
+        $this->warn('⚠️  Store these credentials securely. The password cannot be recovered.');
 
         return Command::SUCCESS;
     }

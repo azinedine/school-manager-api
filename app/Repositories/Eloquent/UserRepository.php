@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Models\User;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class UserRepository implements UserRepositoryInterface
@@ -13,12 +13,12 @@ class UserRepository implements UserRepositoryInterface
         return DB::transaction(function () use ($user, $data) {
             // Strictly update only passed data
             $user->fill($data);
-            
+
             // If dirty, save
             if ($user->isDirty()) {
                 $user->save();
             }
-            
+
             return $user->refresh()->load('institution');
         });
     }

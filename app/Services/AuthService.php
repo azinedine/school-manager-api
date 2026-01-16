@@ -3,17 +3,12 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\Institution;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
     /**
      * Register a new user.
-     *
-     * @param array $data
-     * @return array
      */
     public function register(array $data): array
     {
@@ -53,25 +48,22 @@ class AuthService
     /**
      * Login a user.
      *
-     * @param array $credentials
-     * @return array
      * @throws ValidationException
      */
     public function login(array $credentials): array
     {
-        if (!auth()->attempt($credentials)) {
+        if (! auth()->attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => ['Invalid credentials.'],
             ]);
         }
 
         $user = User::where('email', $credentials['email'])->firstOrFail();
-        
+
         // Update last login timestamp
         $user->update(['last_login_at' => now()]);
-        
-        $token = $user->createToken('auth_token')->plainTextToken;
 
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return [
             'user' => new \App\Http\Resources\UserResource($user->load('institution')),
@@ -82,9 +74,6 @@ class AuthService
 
     /**
      * Logout the user.
-     *
-     * @param User $user
-     * @return void
      */
     public function logout(User $user): void
     {
@@ -93,9 +82,6 @@ class AuthService
 
     /**
      * Delete the user account.
-     *
-     * @param User $user
-     * @return void
      */
     public function deleteAccount(User $user): void
     {

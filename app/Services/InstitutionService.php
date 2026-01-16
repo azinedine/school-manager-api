@@ -49,7 +49,7 @@ class InstitutionService
 
     /**
      * Create a new institution.
-     * 
+     *
      * @throws ValidationException
      */
     public function create(array $data): Institution
@@ -62,7 +62,7 @@ class InstitutionService
 
     /**
      * Update an institution.
-     * 
+     *
      * @throws ValidationException
      */
     public function update(Institution $institution, array $data): Institution
@@ -119,7 +119,7 @@ class InstitutionService
 
     /**
      * Business rule: Validate that municipality belongs to the specified wilaya.
-     * 
+     *
      * @throws ValidationException
      */
     private function validateMunicipalityBelongsToWilaya(array $data): void
@@ -130,7 +130,7 @@ class InstitutionService
 
         $municipality = Municipality::find($data['municipality_id']);
 
-        if (!$municipality || $municipality->wilaya_id != $data['wilaya_id']) {
+        if (! $municipality || $municipality->wilaya_id != $data['wilaya_id']) {
             throw ValidationException::withMessages([
                 'municipality_id' => ['The selected municipality does not belong to the selected wilaya.'],
             ]);

@@ -32,9 +32,9 @@ return new class extends Migration
                 // Note: SQLite may already have this as string, so we ensure it works
             });
         }
-        
+
         // Add municipality_id FK if not exists (as proper unsigned bigint)
-        if (!Schema::hasColumn('institutions', 'municipality_id')) {
+        if (! Schema::hasColumn('institutions', 'municipality_id')) {
             Schema::table('institutions', function (Blueprint $table) {
                 $table->unsignedBigInteger('municipality_id')->nullable()->after('wilaya_id');
                 $table->foreign('municipality_id')->references('id')->on('municipalities')->nullOnDelete();
@@ -46,7 +46,7 @@ return new class extends Migration
     {
         Schema::table('institutions', function (Blueprint $table) {
             // Re-add wilaya_code as nullable to avoid issues
-            if (!Schema::hasColumn('institutions', 'wilaya_code')) {
+            if (! Schema::hasColumn('institutions', 'wilaya_code')) {
                 $table->string('wilaya_code')->nullable();
             }
         });

@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
@@ -12,6 +11,7 @@ class UserPolicy
         if ($user->isSuperAdmin()) {
             return true;
         }
+
         return null;
     }
 
@@ -37,11 +37,11 @@ class UserPolicy
         }
 
         if ($user->isAdmin()) {
-            return !$model->isSuperAdmin() && !$model->isAdmin();
+            return ! $model->isSuperAdmin() && ! $model->isAdmin();
         }
 
         if ($user->isManager()) {
-            return !$model->isSuperAdmin() && !$model->isAdmin() && !$model->isManager();
+            return ! $model->isSuperAdmin() && ! $model->isAdmin() && ! $model->isManager();
         }
 
         return false;
@@ -55,11 +55,11 @@ class UserPolicy
         }
 
         if ($user->isAdmin()) {
-            return !$model->isSuperAdmin() && !$model->isAdmin();
+            return ! $model->isSuperAdmin() && ! $model->isAdmin();
         }
 
         if ($user->isManager()) {
-            return !$model->isSuperAdmin() && !$model->isAdmin() && !$model->isManager();
+            return ! $model->isSuperAdmin() && ! $model->isAdmin() && ! $model->isManager();
         }
 
         return false;

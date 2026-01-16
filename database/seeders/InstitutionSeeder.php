@@ -19,19 +19,21 @@ class InstitutionSeeder extends Seeder
         // Ensure we have Wilayas and Municipalities
         if (Wilaya::count() === 0) {
             $this->command->warn('No Wilayas found. Please run WilayaMunicipalitySeeder first.');
+
             return;
         }
 
         $algiers = Wilaya::where('code', '16')->first();
         $oran = Wilaya::where('code', '31')->first();
-        
+
         // Ensure specific municipalities exist or pick random ones from the wilaya
         $algiersMuni = $algiers ? $algiers->municipalities()->first() : Municipality::first();
         $oranMuni = $oran ? $oran->municipalities()->first() : Municipality::skip(1)->first();
 
-        if (!$algiersMuni || !$oranMuni) {
-             $this->command->warn('Not enough municipalities found to seed institutions properly.');
-             return;
+        if (! $algiersMuni || ! $oranMuni) {
+            $this->command->warn('Not enough municipalities found to seed institutions properly.');
+
+            return;
         }
 
         $institutions = [
@@ -73,6 +75,7 @@ class InstitutionSeeder extends Seeder
         foreach ($institutions as $data) {
             if (Institution::where('email', $data['email'])->exists()) {
                 $this->command->info("Institution {$data['name']} already exists. Skipping.");
+
                 continue;
             }
 

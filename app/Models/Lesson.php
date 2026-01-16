@@ -33,6 +33,7 @@ class Lesson extends Model
      * Status constants
      */
     public const STATUS_DRAFT = 'draft';
+
     public const STATUS_PUBLISHED = 'published';
 
     /**
