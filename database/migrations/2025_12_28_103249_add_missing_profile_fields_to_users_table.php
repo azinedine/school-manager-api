@@ -33,7 +33,7 @@ return new class extends Migration
                 'date_of_birth',
                 'address',
                 'phone',
-                'years_of_experience'
+                'years_of_experience',
             ]);
         });
     }
