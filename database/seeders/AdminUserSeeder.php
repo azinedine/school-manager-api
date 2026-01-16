@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class AdminUserSeeder extends Seeder
@@ -21,6 +20,7 @@ class AdminUserSeeder extends Seeder
         // Check if admin already exists
         if (User::where('email', $email)->exists()) {
             $this->command->info("Admin with email {$email} already exists. Skipping.");
+
             return;
         }
 
@@ -33,9 +33,9 @@ class AdminUserSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
-        $this->command->info("✅ Admin created successfully!");
+        $this->command->info('✅ Admin created successfully!');
         $this->command->info("   Email: {$user->email}");
         $this->command->info("   Role: {$user->role}");
-        $this->command->warn("   ⚠️  Remember to change the default password immediately!");
+        $this->command->warn('   ⚠️  Remember to change the default password immediately!');
     }
 }
