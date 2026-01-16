@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeacherResource;
-use App\Repositories\Contracts\TeacherRepositoryInterface;
 use App\Models\User;
+use App\Repositories\Contracts\TeacherRepositoryInterface;
 
 class TeacherController extends Controller
 {
@@ -25,6 +25,7 @@ class TeacherController extends Controller
     public function index()
     {
         $teachers = $this->teacherRepository->getAllTeachers();
+
         return TeacherResource::collection($teachers);
     }
 
@@ -37,7 +38,7 @@ class TeacherController extends Controller
         $teacher->delete();
 
         return response()->json([
-            'message' => 'Teacher account deleted successfully'
+            'message' => 'Teacher account deleted successfully',
         ]);
     }
 }
