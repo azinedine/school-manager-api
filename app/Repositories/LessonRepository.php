@@ -57,6 +57,7 @@ class LessonRepository implements LessonRepositoryInterface
     public function create(array $data): Lesson
     {
         $lesson = Lesson::create($data);
+
         return $lesson->load(['teacher', 'institution']);
     }
 
@@ -67,7 +68,7 @@ class LessonRepository implements LessonRepositoryInterface
     {
         $lesson = $this->findById($id);
 
-        if (!$lesson) {
+        if (! $lesson) {
             throw new \Exception("Lesson with ID {$id} not found");
         }
 
@@ -83,7 +84,7 @@ class LessonRepository implements LessonRepositoryInterface
     {
         $lesson = $this->findById($id);
 
-        if (!$lesson) {
+        if (! $lesson) {
             return false;
         }
 
@@ -107,19 +108,19 @@ class LessonRepository implements LessonRepositoryInterface
      */
     protected function applyFilters($query, array $filters): void
     {
-        if (isset($filters['status']) && !empty($filters['status'])) {
+        if (isset($filters['status']) && ! empty($filters['status'])) {
             $query->byStatus($filters['status']);
         }
 
-        if (isset($filters['class_name']) && !empty($filters['class_name'])) {
+        if (isset($filters['class_name']) && ! empty($filters['class_name'])) {
             $query->byClass($filters['class_name']);
         }
 
-        if (isset($filters['subject_name']) && !empty($filters['subject_name'])) {
+        if (isset($filters['subject_name']) && ! empty($filters['subject_name'])) {
             $query->bySubject($filters['subject_name']);
         }
 
-        if (isset($filters['academic_year']) && !empty($filters['academic_year'])) {
+        if (isset($filters['academic_year']) && ! empty($filters['academic_year'])) {
             $query->byAcademicYear($filters['academic_year']);
         }
 
