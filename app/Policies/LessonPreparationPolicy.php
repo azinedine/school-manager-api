@@ -15,6 +15,7 @@ class LessonPreparationPolicy
         if ($user->isSuperAdmin()) {
             return true;
         }
+
         return null;
     }
 
