@@ -58,20 +58,20 @@ class LessonService
 
     /**
      * Resolve subject name from teacher profile
-     * 
+     *
      * Subject is identity-bound to the teacher, not lesson-bound.
      * Takes the first subject from the teacher's subjects array.
      */
     protected function resolveSubjectFromTeacher(int $teacherId): string
     {
         $teacher = User::find($teacherId);
-        
-        if (!$teacher) {
+
+        if (! $teacher) {
             return 'Unknown';
         }
 
         $subjects = $teacher->subjects;
-        
+
         // If subjects is an array and has values, use the first one
         if (is_array($subjects) && count($subjects) > 0) {
             return $subjects[0];
@@ -83,7 +83,7 @@ class LessonService
 
     /**
      * Create a new lesson
-     * 
+     *
      * NOTE: subject_name is resolved from the teacher's profile,
      * not from the request payload.
      */
@@ -97,7 +97,7 @@ class LessonService
         $data['subject_name'] = $this->resolveSubjectFromTeacher($teacherId);
 
         // Set default status if not provided
-        if (!isset($data['status'])) {
+        if (! isset($data['status'])) {
             $data['status'] = Lesson::STATUS_DRAFT;
         }
 
