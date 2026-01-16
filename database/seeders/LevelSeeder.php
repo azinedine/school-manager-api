@@ -17,7 +17,7 @@ class LevelSeeder extends Seeder
             ['name' => '2AM', 'name_ar' => 'السنة الثانية متوسط'],
             ['name' => '3AM', 'name_ar' => 'السنة الثالثة متوسط'],
             ['name' => '4AM', 'name_ar' => 'السنة الرابعة متوسط'],
-            // Add some High School defaults just in case, or stick to mock? 
+            // Add some High School defaults just in case, or stick to mock?
             // Mock had commented out AS levels. I will add them as they are useful.
             ['name' => '1AS', 'name_ar' => 'السنة الأولى ثانوي'],
             ['name' => '2AS', 'name_ar' => 'السنة الثانية ثانوي'],
