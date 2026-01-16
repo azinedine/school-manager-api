@@ -23,12 +23,12 @@ class SubjectSeeder extends Seeder
             ['name' => 'Civic Education', 'name_ar' => 'التربية المدنية'],
             ['name' => 'Sports', 'name_ar' => 'التربية البدنية'],
             ['name' => 'Music', 'name_ar' => 'التربية الموسيقية'],
-             ['name' => 'Amazigh', 'name_ar' => 'اللغة الأمازيغية'],
+            ['name' => 'Amazigh', 'name_ar' => 'اللغة الأمازيغية'],
         ];
 
         // Truncate table to restart IDs or just update/create
-        Subject::truncate(); 
-        
+        Subject::truncate();
+
         foreach ($subjects as $subject) {
             Subject::firstOrCreate(['name' => $subject['name']], $subject);
         }
