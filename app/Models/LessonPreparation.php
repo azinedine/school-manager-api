@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Casts\AsCollection;
 
 class LessonPreparation extends Model
 {
@@ -49,14 +48,14 @@ class LessonPreparation extends Model
         'resources_needed' => 'array',
         'assessment_methods' => 'array',
         'lesson_elements' => 'array',
-        
+
         // New Fields Casts
         'targeted_knowledge' => 'array',
         'used_materials' => 'array',
         'references' => 'array',
         'phases' => 'array',
         'activities' => 'array',
-        
+
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
