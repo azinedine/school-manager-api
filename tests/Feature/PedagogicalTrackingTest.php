@@ -40,9 +40,9 @@ class PedagogicalTrackingTest extends TestCase
                 'data' => [
                     'oral_interrogation' => true,
                     'notebook_checked' => false,
-                ]
+                ],
             ]);
-            
+
         $this->assertDatabaseHas('student_pedagogical_tracking', [
             'grade_student_id' => $student->id,
             'term' => 1,
