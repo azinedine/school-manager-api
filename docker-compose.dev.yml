@@ -1,0 +1,93 @@
+# ====================================
+# DEVELOPMENT DOCKER COMPOSE
+# ====================================
+# This is for LOCAL DEVELOPMENT ONLY
+# - Auto-runs migrations
+# - Auto-seeds reference data
+# - Exposes ports for local access
+# - Uses .env.local if available
+# ====================================
+
+services:
+  # MySQL Database
+  database:
+    image: mysql:8.0
+    container_name: school-manager-db-dev
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-school_manager_dev}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_USER: ${DB_USERNAME:-school_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data_dev:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-secret}"]
+      timeout: 20s
+      retries: 10
+      interval: 5s
+
+  # Laravel API Backend
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: school-manager-api-dev
+    restart: unless-stopped
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: mysql
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-school_manager_dev}
+      DB_USERNAME: ${DB_USERNAME:-school_user}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      APP_KEY: ${APP_KEY}
+      APP_URL: ${APP_URL:-http://localhost:8000}
+      SANCTUM_STATEFUL_DOMAINS: ${SANCTUM_STATEFUL_DOMAINS:-localhost:3000}
+      SESSION_DOMAIN: ${SESSION_DOMAIN:-localhost}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
+    ports:
+      - "8000:80"
+    volumes:
+      - ./storage:/var/www/html/storage
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache
+      # Optional: Bind mount source code for hot reload in development
+      # - .:/var/www/html
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - backend-network
+    command: >
+      sh -c "
+        echo '🔧 [DEV] Starting development environment...' &&
+        php artisan config:cache &&
+        php artisan route:cache &&
+        php artisan migrate --force &&
+        echo '🌱 [DEV] Seeding reference data...' &&
+        php artisan db:seed --class=SubjectSeeder --force &&
+        php artisan db:seed --class=LevelSeeder --force &&
+        php artisan db:seed --class=WilayaMunicipalitySeeder --force &&
+        php artisan db:seed --class=MaterialSeeder --force &&
+        php artisan db:seed --class=ReferenceSeeder --force &&
+        php artisan db:seed --class=LearningObjectiveSeeder --force &&
+        php artisan db:seed --class=TeachingMethodSeeder --force &&
+        echo '✅ [DEV] Ready for development!' &&
+        apache2-foreground
+      "
+
+networks:
+  backend-network:
+    driver: bridge
+
+volumes:
+  mysql_data_dev:
+    driver: local
+    # Data persists in Docker volume (survives container rebuilds)
