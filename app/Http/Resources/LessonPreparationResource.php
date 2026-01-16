@@ -15,7 +15,7 @@ class LessonPreparationResource extends JsonResource
     public function toArray(Request $request): array
     {
         // Helper to safely get property from object or array
-        $get = fn($key, $default = null) => data_get($this->resource, $key, $default);
+        $get = fn ($key, $default = null) => data_get($this->resource, $key, $default);
 
         return [
             'id' => $get('id'),
@@ -34,7 +34,7 @@ class LessonPreparationResource extends JsonResource
             'learning_unit' => $get('learning_unit'),
             'knowledge_resource' => $get('knowledge_resource'),
             'lesson_elements' => $get('lesson_elements', []),
-            
+
             // Pedagogical V2 Fields
             'targeted_knowledge' => $get('targeted_knowledge', []),
             'used_materials' => $get('used_materials', []),
@@ -45,11 +45,11 @@ class LessonPreparationResource extends JsonResource
             'evaluation_type' => $get('evaluation_type'),
             'evaluation_content' => $get('evaluation_content'),
             'status' => $get('status'),
-            'created_at' => $this->resource instanceof \App\Models\LessonPreparation 
-                ? $this->created_at->toIso8601String() 
+            'created_at' => $this->resource instanceof \App\Models\LessonPreparation
+                ? $this->created_at->toIso8601String()
                 : $get('created_at'),
-            'updated_at' => $this->resource instanceof \App\Models\LessonPreparation 
-                ? $this->updated_at->toIso8601String() 
+            'updated_at' => $this->resource instanceof \App\Models\LessonPreparation
+                ? $this->updated_at->toIso8601String()
                 : $get('updated_at'),
         ];
     }
