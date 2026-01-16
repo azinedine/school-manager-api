@@ -16,7 +16,7 @@ class StoreLessonPreparationRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     * 
+     *
      * NOTE: subject is removed from validation.
      * Subject is identity-bound to the teacher and resolved from auth user.
      *
@@ -32,12 +32,12 @@ class StoreLessonPreparationRequest extends FormRequest
                 function ($attribute, $value, $fail) {
                     $teacherSubjects = auth()->user()->subjects ?? [];
                     // Ensure subjects is an array
-                    if (!is_array($teacherSubjects)) {
+                    if (! is_array($teacherSubjects)) {
                         $teacherSubjects = [];
                     }
-                    
-                    if (!in_array($value, $teacherSubjects)) {
-                        $fail("The selected subject is not in your assigned subjects list.");
+
+                    if (! in_array($value, $teacherSubjects)) {
+                        $fail('The selected subject is not in your assigned subjects list.');
                     }
                 },
             ],
@@ -56,19 +56,19 @@ class StoreLessonPreparationRequest extends FormRequest
             // Assessment criteria removed
             'notes' => ['nullable', 'string', 'max:2000'],
             'status' => ['required', 'in:draft,ready,delivered'],
-            
+
             // Pedagogical Fields
             'domain' => ['required', 'string', 'min:3', 'max:255'],
             'learning_unit' => ['required', 'string', 'min:3', 'max:255'],
             'knowledge_resource' => ['required', 'string', 'min:3', 'max:255'],
-            
+
             // Lesson Elements (Dynamic Array of Objects) - Optional in V2 if phases present, but kept required for generic validation
             // We can make it nullable or keep it as is. If UI sends empty array, it might fail min:1.
             // The schema sends it as optional? Frontend defaults to [{content: ''}] if empty.
             // Let's keep it required for now as legacy.
             'lesson_elements' => ['nullable', 'array'],
             'lesson_elements.*.content' => ['nullable', 'string'],
-            
+
             // Pedagogical V2 Fields (Nullable/Optional)
             'targeted_knowledge' => ['nullable', 'array'],
             'targeted_knowledge.*' => ['string'],
@@ -76,7 +76,7 @@ class StoreLessonPreparationRequest extends FormRequest
             'used_materials.*' => ['string'],
             'references' => ['nullable', 'array'],
             'references.*' => ['string'],
-            
+
             'phases' => ['nullable', 'array'],
             'phases.*.type' => ['required_with:phases', 'string', 'in:departure,presentation,consolidation'],
             'phases.*.content' => ['required_with:phases', 'string'],
@@ -84,7 +84,7 @@ class StoreLessonPreparationRequest extends FormRequest
 
             'activities' => ['nullable', 'array'],
             'activities.*.content' => ['required_with:activities', 'string'],
-            
+
             // Evaluation (Discriminator)
             'evaluation_type' => ['required', 'in:assessment,homework'],
             'evaluation_content' => ['nullable', 'string', 'min:3'],
@@ -95,9 +95,11 @@ class StoreLessonPreparationRequest extends FormRequest
                 // Prepend 'sometimes' to the rule array or string
                 if (is_array($rule)) {
                     array_unshift($rule, 'sometimes');
+
                     return $rule;
                 }
-                return 'sometimes|' . $rule;
+
+                return 'sometimes|'.$rule;
             }, $rules);
         }
 
