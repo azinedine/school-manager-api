@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Reference;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ReferenceController extends Controller
 {
@@ -15,7 +15,7 @@ class ReferenceController extends Controller
     public function index(): JsonResponse
     {
         return response()->json([
-            'data' => Reference::orderBy('name')->get()
+            'data' => Reference::orderBy('name')->get(),
         ]);
     }
 
@@ -33,7 +33,7 @@ class ReferenceController extends Controller
 
         return response()->json([
             'message' => 'Reference created successfully',
-            'data' => $reference
+            'data' => $reference,
         ], 201);
     }
 
@@ -43,7 +43,7 @@ class ReferenceController extends Controller
     public function show(Reference $reference): JsonResponse
     {
         return response()->json([
-            'data' => $reference
+            'data' => $reference,
         ]);
     }
 
@@ -53,7 +53,7 @@ class ReferenceController extends Controller
     public function update(Request $request, Reference $reference): JsonResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:references,name,' . $reference->id,
+            'name' => 'required|string|max:255|unique:references,name,'.$reference->id,
             'name_ar' => 'nullable|string|max:255',
         ]);
 
@@ -61,7 +61,7 @@ class ReferenceController extends Controller
 
         return response()->json([
             'message' => 'Reference updated successfully',
-            'data' => $reference
+            'data' => $reference,
         ]);
     }
 
@@ -73,7 +73,7 @@ class ReferenceController extends Controller
         $reference->delete();
 
         return response()->json([
-            'message' => 'Reference deleted successfully'
+            'message' => 'Reference deleted successfully',
         ]);
     }
 }
