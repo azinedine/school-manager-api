@@ -14,12 +14,14 @@ services:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - backend-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-secret}"]
       timeout: 20s
       retries: 10
+      interval: 5s
 
   # Laravel API Backend
   api:
