@@ -42,20 +42,20 @@ class LessonPreparationService
 
     /**
      * Resolve subject name from teacher profile
-     * 
+     *
      * Subject is identity-bound to the teacher, not lesson-bound.
      * Takes the first subject from the teacher's subjects array.
      */
     protected function resolveSubjectFromTeacher(int $teacherId): string
     {
         $teacher = User::find($teacherId);
-        
-        if (!$teacher) {
+
+        if (! $teacher) {
             return 'Unknown';
         }
 
         $subjects = $teacher->subjects;
-        
+
         // If subjects is an array and has values, use the first one
         if (is_array($subjects) && count($subjects) > 0) {
             return $subjects[0];
@@ -78,7 +78,7 @@ class LessonPreparationService
 
         // Subject is now passed in $data and validated by the Request
         // but if missing (fallback), try to resolve it
-        if (!isset($data['subject']) || empty($data['subject'])) {
+        if (! isset($data['subject']) || empty($data['subject'])) {
             $data['subject'] = $this->resolveSubjectFromTeacher($teacherId);
         }
 
@@ -95,7 +95,7 @@ class LessonPreparationService
     {
         // Don't allow changing teacher
         unset($data['teacher_id']);
-        
+
         // Subject CAN be updated now if the teacher wants to correct it
 
         // Validate that arrays are properly formatted
@@ -166,7 +166,7 @@ class LessonPreparationService
         foreach ($arrayFields as $field) {
             if (isset($data[$field]) && is_array($data[$field])) {
                 // Filter out empty strings
-                $data[$field] = array_filter($data[$field], fn($item) => !empty(trim($item)));
+                $data[$field] = array_filter($data[$field], fn ($item) => ! empty(trim($item)));
                 // Reindex array
                 $data[$field] = array_values($data[$field]);
             }
