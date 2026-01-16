@@ -1,0 +1,121 @@
+# ====================================
+# PRODUCTION DOCKER COMPOSE
+# ====================================
+# This is for PRODUCTION DEPLOYMENT
+# - NO auto-seeding
+# - Migrations run manually via deploy script
+# - NO port exposure (behind reverse proxy)
+# - Uses production .env
+# - Optimized for performance and safety
+# ====================================
+
+services:
+  # MySQL Database
+  database:
+    image: mysql:8.0
+    container_name: school-manager-db-prod
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    # DO NOT expose ports in production (use internal network only)
+    volumes:
+      - mysql_data_prod:/var/lib/mysql
+      # Backup volume for automated backups
+      - ./backups:/backups
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+    # Resource limits for production stability
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+
+  # Laravel API Backend
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILD_ENV=production
+    container_name: school-manager-api-prod
+    restart: always
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      DB_CONNECTION: mysql
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      APP_KEY: ${APP_KEY}
+      APP_URL: ${APP_URL}
+      SANCTUM_STATEFUL_DOMAINS: ${SANCTUM_STATEFUL_DOMAINS}
+      SESSION_DOMAIN: ${SESSION_DOMAIN}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      LOG_CHANNEL: ${LOG_CHANNEL:-stack}
+      LOG_LEVEL: ${LOG_LEVEL:-error}
+    # DO NOT expose ports in production (use reverse proxy like Nginx/Caddy)
+    # ports:
+    #   - "8000:80"
+    volumes:
+      # Storage MUST be persistent
+      - storage_data:/var/www/html/storage
+      # Cache can be ephemeral but persistence is better for performance
+      - cache_data:/var/www/html/bootstrap/cache
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - backend-network
+    command: >
+      sh -c "
+        echo '🚀 [PROD] Starting production environment...' &&
+        php artisan config:cache &&
+        php artisan route:cache &&
+        php artisan view:cache &&
+        php artisan event:cache &&
+        echo '⚠️  [PROD] Migrations must be run manually via deploy script' &&
+        echo '✅ [PROD] Production ready!' &&
+        apache2-foreground
+      "
+    # Resource limits for production stability
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 256M
+    # Health check for load balancers
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  backend-network:
+    driver: bridge
+
+volumes:
+  mysql_data_prod:
+    driver: local
+    # CRITICAL: This volume contains ALL database data
+    # NEVER delete this volume unless you want to lose all data
+  storage_data:
+    driver: local
+    # Contains uploaded files, logs, etc
+  cache_data:
+    driver: local
+    # Contains compiled views, routes, config cache
