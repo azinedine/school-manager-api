@@ -38,7 +38,7 @@ return new class extends Migration
                 'knowledge_resource',
                 'lesson_elements',
                 'evaluation_type',
-                'evaluation_content'
+                'evaluation_content',
             ]);
         });
     }
