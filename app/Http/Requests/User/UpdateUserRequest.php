@@ -14,6 +14,7 @@ class UpdateUserRequest extends FormRequest
     public function authorize(): bool
     {
         $user = $this->route('user'); // The user resource being updated
+
         // Allow if user is updating themselves OR has permission to update others
         return $this->user()->id === $user->id || $this->user()->can('update', $user);
     }
@@ -34,7 +35,7 @@ class UpdateUserRequest extends FormRequest
             'wilaya' => ['nullable', 'string'],
             'municipality' => ['nullable', 'string'],
             'institution_id' => ['nullable', 'exists:institutions,id'],
-            
+
             // Extended Profile Fields
             'name_ar' => ['nullable', 'string', 'max:255'],
             'gender' => ['nullable', 'string', 'in:male,female'],
