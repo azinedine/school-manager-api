@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\WilayaResource;
 use App\Http\Resources\MunicipalityResource;
+use App\Http\Resources\WilayaResource;
 use App\Models\Wilaya;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +15,7 @@ class WilayaController extends Controller
 
     /**
      * List all wilayas.
-     * 
+     *
      * GET /api/v1/wilayas
      */
     public function index(): JsonResponse
@@ -32,7 +32,7 @@ class WilayaController extends Controller
 
     /**
      * Get municipalities for a wilaya.
-     * 
+     *
      * GET /api/v1/wilayas/{wilaya}/municipalities
      */
     public function municipalities(Wilaya $wilaya): JsonResponse
