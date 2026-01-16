@@ -30,17 +30,17 @@ class GradeStudentController extends Controller
                 },
                 'pedagogicalTracking' => function ($q) use ($term) {
                     $q->where('term', $term);
-                }
+                },
             ])
             ->orderBy('sort_order')
             ->get()
             ->map(function ($student) use ($term) {
                 // Get or create term grades to ensure they always exist
                 $grades = $student->grades->first() ?? $student->getOrCreateTermGrades($term);
-                
+
                 // Get or create term tracking
                 $tracking = $student->pedagogicalTracking->first() ?? $student->getOrCreateTermTracking($term);
-                
+
                 return [
                     'id' => $student->id,
                     'student_number' => $student->student_number,
@@ -130,7 +130,7 @@ class GradeStudentController extends Controller
 
         return response()->json([
             'data' => $created,
-            'message' => count($created) . ' students added successfully',
+            'message' => count($created).' students added successfully',
         ], 201);
     }
 
