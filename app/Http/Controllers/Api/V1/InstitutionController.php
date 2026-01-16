@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Institution\GetInstitutionsRequest;
 use App\Http\Requests\Institution\StoreInstitutionRequest;
 use App\Http\Requests\Institution\UpdateInstitutionRequest;
-use App\Http\Requests\Institution\GetInstitutionsRequest;
 use App\Http\Resources\InstitutionResource;
 use App\Models\Institution;
 use App\Services\InstitutionService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class InstitutionController extends Controller
@@ -24,9 +23,9 @@ class InstitutionController extends Controller
 
     /**
      * Display a listing of institutions.
-     * 
+     *
      * GET /api/v1/institutions
-     * 
+     *
      * Query params:
      *   - wilaya_id: Filter by wilaya
      *   - municipality_id: Filter by municipality
@@ -59,7 +58,7 @@ class InstitutionController extends Controller
 
     /**
      * Store a newly created institution.
-     * 
+     *
      * POST /api/v1/institutions
      */
     public function store(StoreInstitutionRequest $request): JsonResponse
@@ -74,7 +73,7 @@ class InstitutionController extends Controller
 
     /**
      * Display the specified institution.
-     * 
+     *
      * GET /api/v1/institutions/{institution}
      */
     public function show(Institution $institution): JsonResponse
@@ -91,7 +90,7 @@ class InstitutionController extends Controller
 
     /**
      * Update the specified institution.
-     * 
+     *
      * PUT /api/v1/institutions/{institution}
      */
     public function update(UpdateInstitutionRequest $request, Institution $institution): JsonResponse
@@ -106,7 +105,7 @@ class InstitutionController extends Controller
 
     /**
      * Remove the specified institution (soft delete).
-     * 
+     *
      * DELETE /api/v1/institutions/{institution}
      */
     public function destroy(Institution $institution): JsonResponse
@@ -120,7 +119,7 @@ class InstitutionController extends Controller
 
     /**
      * Restore a soft-deleted institution.
-     * 
+     *
      * POST /api/v1/institutions/{id}/restore
      */
     public function restore(int $id): JsonResponse
@@ -135,18 +134,18 @@ class InstitutionController extends Controller
 
     /**
      * Get institutions by Wilaya and Municipality.
-     * 
+     *
      * GET /api/v1/wilayas/{wilaya}/municipalities/{municipality}/institutions
      */
     public function getByLocation($wilayaId, $municipalityId): JsonResponse
     {
         // No Auth check needed as this is for public registration
-        
+
         // We can use the service list method with strict filters
         $filters = [
             'wilaya_id' => $wilayaId,
             'municipality_id' => $municipalityId,
-            'is_active' => true // Only active institutions for registration
+            'is_active' => true, // Only active institutions for registration
         ];
 
         // Retrieve all matching institutions (not paginated, for dropdown)
