@@ -66,7 +66,7 @@ class LessonController extends Controller
     {
         $lesson = $this->service->getLesson($id);
 
-        if (!$lesson) {
+        if (! $lesson) {
             return response()->json(
                 ['message' => 'Lesson not found'],
                 404
@@ -87,7 +87,7 @@ class LessonController extends Controller
     {
         $lesson = $this->service->getLesson($id);
 
-        if (!$lesson) {
+        if (! $lesson) {
             return response()->json(
                 ['message' => 'Lesson not found'],
                 404
@@ -110,7 +110,7 @@ class LessonController extends Controller
     {
         $lesson = $this->service->getLesson($id);
 
-        if (!$lesson) {
+        if (! $lesson) {
             return response()->json(
                 ['message' => 'Lesson not found'],
                 404
