@@ -63,7 +63,7 @@ class LessonPreparationController extends Controller
     {
         $preparation = $this->service->getPreparation($id);
 
-        if (!$preparation) {
+        if (! $preparation) {
             return response()->json(
                 ['error' => 'Lesson preparation not found'],
                 404
@@ -84,7 +84,7 @@ class LessonPreparationController extends Controller
     {
         $preparation = $this->service->getPreparation($id);
 
-        if (!$preparation) {
+        if (! $preparation) {
             return response()->json(
                 ['error' => 'Lesson preparation not found'],
                 404
@@ -107,7 +107,7 @@ class LessonPreparationController extends Controller
     {
         $preparation = $this->service->getPreparation($id);
 
-        if (!$preparation) {
+        if (! $preparation) {
             return response()->json(
                 ['error' => 'Lesson preparation not found'],
                 404
