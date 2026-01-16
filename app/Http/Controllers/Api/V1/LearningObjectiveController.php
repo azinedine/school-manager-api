@@ -13,7 +13,7 @@ class LearningObjectiveController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => \App\Models\LearningObjective::all()
+            'data' => \App\Models\LearningObjective::all(),
         ]);
     }
 
