@@ -23,10 +23,29 @@ class AuthService
             'wilaya' => $data['wilaya'] ?? null,
             'municipality' => $data['municipality'] ?? null,
             'institution_id' => $institutionId,
-            'class' => $data['class'] ?? null,
-            'linked_student_id' => $data['linked_student_id'] ?? null,
+            'status' => 'active',
+
+            // Profile fields
+            'name_ar' => $data['name_ar'] ?? null,
+            'gender' => $data['gender'] ?? null,
+            'date_of_birth' => $data['date_of_birth'] ?? null,
+            'phone' => $data['phone'] ?? null,
+            'address' => $data['address'] ?? null,
+
+            // Teacher fields
+            'teacher_id' => $data['teacher_id'] ?? null,
+            'years_of_experience' => $data['years_of_experience'] ?? null,
+            'employment_status' => $data['employment_status'] ?? 'active',
+            'weekly_teaching_load' => $data['weekly_teaching_load'] ?? null,
             'subjects' => $data['subjects'] ?? null,
             'levels' => $data['levels'] ?? null,
+            'assigned_classes' => $data['assigned_classes'] ?? null,
+            'groups' => $data['groups'] ?? null,
+
+            // Student fields
+            'class' => $data['class'] ?? null,
+            'linked_student_id' => $data['linked_student_id'] ?? null,
+
             // Admin fields
             'department' => $data['department'] ?? null,
             'position' => $data['position'] ?? null,
@@ -39,7 +58,7 @@ class AuthService
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [
-            'user' => new \App\Http\Resources\UserResource($user->load('institution')),
+            'user' => new \App\Http\Resources\UserResource($user->load(['institution', 'wilaya', 'municipality'])),
             'access_token' => $token,
             'token_type' => 'Bearer',
         ];
@@ -66,7 +85,7 @@ class AuthService
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [
-            'user' => new \App\Http\Resources\UserResource($user->load('institution')),
+            'user' => new \App\Http\Resources\UserResource($user->load(['institution', 'wilaya', 'municipality'])),
             'access_token' => $token,
             'token_type' => 'Bearer',
         ];
