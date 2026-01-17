@@ -52,6 +52,8 @@ class User extends Authenticatable
         'years_of_experience',
         'employment_status',
         'weekly_teaching_load',
+        'assigned_classes',
+        'groups',
 
         'status',
         'last_login_at',
@@ -80,6 +82,8 @@ class User extends Authenticatable
             'password' => 'hashed',
             'subjects' => 'array',
             'levels' => 'array',
+            'assigned_classes' => 'array',
+            'groups' => 'array',
         ];
     }
 
