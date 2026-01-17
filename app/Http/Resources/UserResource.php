@@ -14,33 +14,39 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // Load relationships - note: wilaya/municipality columns store IDs, relationships have same name
+        // Use getRelationValue to get the loaded relationship model
+        $wilayaModel = $this->getRelationValue('wilaya') ?? $this->wilaya()->first();
+        $municipalityModel = $this->getRelationValue('municipality') ?? $this->municipality()->first();
+        $institutionModel = $this->getRelationValue('institution') ?? $this->institution;
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
             'role' => $this->role,
-            'status' => $this->status,
+            'status' => $this->status ?? 'active',
             'avatar' => $this->avatar,
-            'wilaya' => $this->wilaya() ? [
-                'id' => $this->wilaya()->first()?->id,
-                'name' => $this->wilaya()->first()?->name,
-                'name_ar' => $this->wilaya()->first()?->name_ar,
+            'wilaya' => $wilayaModel ? [
+                'id' => $wilayaModel->id,
+                'name' => $wilayaModel->name,
+                'name_ar' => $wilayaModel->name_ar,
             ] : null,
-            'municipality' => $this->municipality() ? [
-                'id' => $this->municipality()->first()?->id,
-                'name' => $this->municipality()->first()?->name,
-                'name_ar' => $this->municipality()->first()?->name_ar,
+            'municipality' => $municipalityModel ? [
+                'id' => $municipalityModel->id,
+                'name' => $municipalityModel->name,
+                'name_ar' => $municipalityModel->name_ar,
             ] : null,
             'institution_id' => $this->institution_id,
-            'institution' => $this->institution ? [
-                'id' => $this->institution->id,
-                'name' => $this->institution->name,
-                'name_ar' => $this->institution->name_ar,
-                'type' => $this->institution->type,
+            'institution' => $institutionModel ? [
+                'id' => $institutionModel->id,
+                'name' => $institutionModel->name,
+                'name_ar' => $institutionModel->name_ar,
+                'type' => $institutionModel->type,
             ] : null,
             'user_institution_id' => $this->user_institution_id,
-            'subjects' => $this->subjects,
-            'levels' => $this->levels,
+            'subjects' => $this->subjects ?? [],
+            'levels' => $this->levels ?? [],
             'class' => $this->class,
             'linkedStudentId' => $this->linked_student_id,
 
