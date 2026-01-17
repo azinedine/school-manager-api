@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('institution_id')->constrained()->cascadeOnDelete();
             $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
-            $table->uuid('student_id');
-            $table->foreign('student_id')->references('id')->on('grade_students')->cascadeOnDelete();
+            $table->foreignUuid('student_id')
+                ->constrained('grade_students')
+                ->cascadeOnDelete();
 
             $table->string('report_number');
             $table->string('academic_year'); // e.g., "2024-2025"
