@@ -75,10 +75,13 @@ services:
         php artisan db:seed --class=SubjectSeeder --force &&
         php artisan db:seed --class=LevelSeeder --force &&
         php artisan db:seed --class=WilayaMunicipalitySeeder --force &&
+        php artisan db:seed --class=InstitutionSeeder --force &&
         php artisan db:seed --class=MaterialSeeder --force &&
         php artisan db:seed --class=ReferenceSeeder --force &&
         php artisan db:seed --class=LearningObjectiveSeeder --force &&
         php artisan db:seed --class=TeachingMethodSeeder --force &&
+        php artisan db:seed --class=SuperAdminSeeder --force &&
+        php artisan db:seed --class=TeacherUserSeeder --force &&
         echo '✅ [DEV] Ready for development!' &&
         apache2-foreground
       "
