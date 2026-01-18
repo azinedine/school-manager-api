@@ -23,64 +23,62 @@ class InstitutionSeeder extends Seeder
             return;
         }
 
-        $algiers = Wilaya::where('code', '16')->first();
-        $oran = Wilaya::where('code', '31')->first();
+        $this->command->info('Seeding institutions across wilayas...');
 
-        // Ensure specific municipalities exist or pick random ones from the wilaya
-        $algiersMuni = $algiers ? $algiers->municipalities()->first() : Municipality::first();
-        $oranMuni = $oran ? $oran->municipalities()->first() : Municipality::skip(1)->first();
-
-        if (! $algiersMuni || ! $oranMuni) {
-            $this->command->warn('Not enough municipalities found to seed institutions properly.');
-
-            return;
-        }
-
-        $institutions = [
-            [
-                'name' => 'El Amel High School',
-                'name_ar' => 'ثانوية الأمل',
-                'wilaya_id' => $algiersMuni->wilaya_id,
-                'municipality_id' => $algiersMuni->id,
-                'address' => '123 Main St, Algiers Centre',
-                'phone' => '021234567',
-                'email' => 'contact@elamel-school.dz',
-                'type' => 'high',
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Al Nahda Middle School',
-                'name_ar' => 'متوسطة النهضة',
-                'wilaya_id' => $oranMuni->wilaya_id,
-                'municipality_id' => $oranMuni->id,
-                'address' => '456 Freedom Ave, Oran',
-                'phone' => '041234567',
-                'email' => 'info@nahda-school.dz',
-                'type' => 'middle',
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Future Primary School',
-                'name_ar' => 'مدرسة المستقبل الابتدائية',
-                'wilaya_id' => $algiersMuni->wilaya_id,
-                'municipality_id' => $algiersMuni->id,
-                'address' => '789 Knowledge Ln, Hydra',
-                'phone' => '021987654',
-                'email' => 'hello@future-school.dz',
-                'type' => 'primary',
-                'is_active' => true,
-            ],
+        // Major wilayas to seed institutions for
+        $wilayaCodes = ['16', '31', '09', '25', '19', '06', '42', '05', '23', '15'];
+        $types = ['primary', 'middle', 'high'];
+        $typeNamesAr = [
+            'primary' => 'مدرسة ابتدائية',
+            'middle' => 'متوسطة',
+            'high' => 'ثانوية',
         ];
 
-        foreach ($institutions as $data) {
-            if (Institution::where('email', $data['email'])->exists()) {
-                $this->command->info("Institution {$data['name']} already exists. Skipping.");
+        $counter = 0;
 
+        foreach ($wilayaCodes as $code) {
+            $wilaya = Wilaya::where('code', $code)->first();
+            if (! $wilaya) {
                 continue;
             }
 
-            Institution::create($data);
-            $this->command->info("✅ Created Institution: {$data['name']}");
+            $municipalities = $wilaya->municipalities()->get();
+
+            foreach ($municipalities as $municipality) {
+                // Create 1-2 institutions per municipality
+                $numInstitutions = rand(1, 2);
+
+                for ($i = 1; $i <= $numInstitutions; $i++) {
+                    $type = $types[array_rand($types)];
+                    $typeName = match ($type) {
+                        'primary' => 'Primary School',
+                        'middle' => 'Middle School',
+                        'high' => 'High School',
+                    };
+
+                    $name = $municipality->name.' '.$typeName.' '.$i;
+                    $email = strtolower(str_replace([' ', "'", '-'], '', $municipality->name)).$i.'@school.dz';
+
+                    if (Institution::where('email', $email)->exists()) {
+                        continue;
+                    }
+
+                    Institution::create([
+                        'name' => $name,
+                        'name_ar' => $typeNamesAr[$type].' '.($municipality->name_ar ?? $municipality->name),
+                        'wilaya_id' => $wilaya->id,
+                        'municipality_id' => $municipality->id,
+                        'address' => $municipality->name.', '.$wilaya->name,
+                        'phone' => '0'.rand(21, 49).rand(100000, 999999),
+                        'email' => $email,
+                        'type' => $type,
+                        'is_active' => true,
+                    ]);
+                    $counter++;
+                }
+            }
         }
+
+        $this->command->info("✅ Created {$counter} institutions across wilayas!");
     }
 }
