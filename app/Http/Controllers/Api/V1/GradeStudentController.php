@@ -32,6 +32,7 @@ class GradeStudentController extends Controller
                     $q->where('term', $term);
                 },
             ])
+            ->withCount('reports')
             ->orderBy('sort_order')
             ->get()
             ->map(function ($student) use ($term) {
@@ -59,6 +60,8 @@ class GradeStudentController extends Controller
                     'notebook_checked' => $tracking->notebook_checked,
                     'last_interrogation_at' => $tracking->last_interrogation_at?->toISOString(),
                     'last_notebook_check_at' => $tracking->last_notebook_check_at?->toISOString(),
+                    // Report indicator
+                    'reports_count' => $student->reports_count,
                 ];
             });
 
