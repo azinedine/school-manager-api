@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\StudentReport;
 
 class GradeStudent extends Model
 {
@@ -96,5 +97,13 @@ class GradeStudent extends Model
                 'notebook_checked' => false,
             ]
         );
+    }
+
+    /**
+     * Get all reports for this student.
+     */
+    public function reports(): HasMany
+    {
+        return $this->hasMany(StudentReport::class, 'student_id');
     }
 }
