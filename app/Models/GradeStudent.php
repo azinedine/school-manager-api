@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use App\Models\StudentReport;
 
 class GradeStudent extends Model
 {
@@ -105,5 +104,23 @@ class GradeStudent extends Model
     public function reports(): HasMany
     {
         return $this->hasMany(StudentReport::class, 'student_id');
+    }
+
+    /**
+     * Get all weekly reviews for this student.
+     */
+    public function weeklyReviews(): HasMany
+    {
+        return $this->hasMany(StudentWeeklyReview::class, 'grade_student_id');
+    }
+
+    /**
+     * Get the latest weekly review for this student.
+     */
+    public function latestWeeklyReview(): HasOne
+    {
+        return $this->hasOne(StudentWeeklyReview::class, 'grade_student_id')
+            ->orderByDesc('year')
+            ->orderByDesc('week_number');
     }
 }
