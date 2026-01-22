@@ -96,6 +96,20 @@ Route::middleware(['auth:sanctum', 'check.suspended'])->group(function () {
 
         // Student Reports
         Route::apiResource('student-reports', \App\Http\Controllers\StudentReportController::class);
+
+        // Weekly Reviews (Pedagogical Tracking)
+        Route::get('grade-classes/{gradeClass}/weekly-reviews/summary', [\App\Http\Controllers\Api\V1\StudentWeeklyReviewController::class, 'summary'])
+            ->name('grade-classes.weekly-reviews.summary');
+        Route::get('grade-classes/{gradeClass}/weekly-reviews', [\App\Http\Controllers\Api\V1\StudentWeeklyReviewController::class, 'index'])
+            ->name('grade-classes.weekly-reviews.index');
+        Route::post('grade-classes/{gradeClass}/weekly-reviews/batch', [\App\Http\Controllers\Api\V1\StudentWeeklyReviewController::class, 'batchStore'])
+            ->name('grade-classes.weekly-reviews.batch');
+        Route::put('weekly-reviews/{studentWeeklyReview}', [\App\Http\Controllers\Api\V1\StudentWeeklyReviewController::class, 'update'])
+            ->name('weekly-reviews.update');
+        Route::post('weekly-reviews/{studentWeeklyReview}/resolve', [\App\Http\Controllers\Api\V1\StudentWeeklyReviewController::class, 'resolve'])
+            ->name('weekly-reviews.resolve');
+        Route::delete('weekly-reviews/{studentWeeklyReview}', [\App\Http\Controllers\Api\V1\StudentWeeklyReviewController::class, 'destroy'])
+            ->name('weekly-reviews.destroy');
     });
 });
 
