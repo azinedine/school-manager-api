@@ -55,7 +55,7 @@ class StudentReportController extends Controller
             'report_date' => $validated['report_date'],
             'incident_description' => $validated['incident_description'],
             'sanctions' => $validated['sanctions'],
-            'other_sanction' => $validated['other_sanction'],
+            'other_sanction' => $validated['other_sanction'] ?? null,
             'status' => 'finalized',
             'meta' => [
                 'class_name' => $student->grade_class->name ?? 'Unknown',
